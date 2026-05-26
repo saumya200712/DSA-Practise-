@@ -1,0 +1,28 @@
+class Solution
+{
+public:
+    int celebrity(vector<vector<int>> &M){
+        int n = M.size();
+        int top=0;
+        int bottom = n-1;
+
+        while(top<bottom){ //// top knows bottom, top can't be celebrity
+            if(M[top][bottom] == 1){
+                top++;
+            }
+            else{
+                bottom--;
+            }
+        }
+        int candidate = top; //M[i][i] is 0 so its celebrity
+        for(int i=0;i<n;i++){
+            if(i == candidate) //don't compare celebrity with themselves, M[i][i]=0
+            continue;
+
+            if(M[candidate][i] == 1 || M[i][candidate] == 0){ //candiate know i
+                return -1;
+            }
+        }
+        return candidate; 
+    }
+};
