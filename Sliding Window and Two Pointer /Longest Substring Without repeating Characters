@@ -1,0 +1,33 @@
+#include <iostream>
+#include <set>
+using namespace std;
+
+    int longestNonRepeatingSubstring(string& s){
+    int left = 0;
+    int maxi = 0;
+    set<char>st;
+    
+    for(int right = 0; right<s.length(); right++){
+    while(st.find(s[right]) != st.end()){
+        st.erase(s[left]);
+        left++;
+    }
+    st.insert(s[right]);
+    
+    maxi = max(maxi, right-left +1);
+}
+
+return maxi;
+}
+
+int main(){
+    string s = "aabcd";
+    int ans = longestNonRepeatingSubstring(s);
+    
+    std::cout<<"Longest NonRepeating Substring : "<< ans;
+    return 0;
+} 
+using namespace std;
+    int longestNonRepeatingSubstring(string& s){
+    int left = 0;
+    
