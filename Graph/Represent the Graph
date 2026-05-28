@@ -1,0 +1,18 @@
+We need to represnet the graph in adjaceny list form. So for undirected graph->
+Example- We convert edges into:
+0 -> 2,3,1
+1 -> 0
+2 -> 0,4
+3 -> 0
+CODE- 
+
+vector<int>adj[V];
+
+for(auto edge: edges){
+int u = edge[0];
+int v = egde[1];
+
+adj[u].push_back(v); //suppose edge is [0,2] so this form 0-----2
+adj[v].push_back(u);
+}
+//for directed graph only use - adj[u].push_back(v);
