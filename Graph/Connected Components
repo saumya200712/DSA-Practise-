@@ -1,0 +1,23 @@
+A connected component means:A group where every node can reach every other node.
+1 --- 2
+
+3 --- 4
+Here:
+1 and 2 connected
+3 and 4 connected
+
+If I start DFS from one node, it visits the ENTIRE connected group.
+So:
+first DFS = first component
+second DFS = second component
+
+CODE-
+for(int i=0;i<V;i++) //traverse the graph 
+{
+    if(!vis[i]) //new component found 
+    {
+        count++; //count the component 
+
+        dfs(i); //apply the recursive function, vist all the graph 
+    }
+}
