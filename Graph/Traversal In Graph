@@ -1,0 +1,61 @@
+  DFS Traversal- deep as we can go 
+
+void dfs(int node, vector<int> adj[], vector<int>& vist, vector<int>& ans){
+
+vist[node] = 1;   //mark the vist, Otherwise infinite revisits.
+
+ans.push_back(node); //Traversal order storing.
+
+for(auto it: adj[node]){ //Explore all connected nodes.
+if(!visted){
+dfs(it,adj,vist,ans);
+     }
+  }
+}
+
+
+BFS Traversal - uses Queue 
+vector<int> bfsOfGraph(int V, vector<vector<int>> edges)
+{
+    vector<int> adj[V];
+
+    for(auto edge : edges)
+    {
+        int u = edge[0];
+        int v = edge[1];
+
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    vector<int> vis(V,0);
+
+    queue<int> q;
+
+    vector<int> ans;
+
+    q.push(0);
+
+    vis[0] = 1;
+
+    while(!q.empty())
+    {
+        int node = q.front();
+
+        q.pop();
+
+        ans.push_back(node);
+
+        for(auto it : adj[node])
+        {
+            if(!vis[it])
+            {
+                vis[it] = 1;
+
+                q.push(it);
+            }
+        }
+    }
+
+    return ans;
+}
