@@ -1,0 +1,79 @@
+Core algor-
+Move forward matching s2
+Once fully matched:
+store end
+Move backward minimizing (bcz we have subsquence, that mean we need to have same order of s2 in s1)
+Save minimum window
+Continue again
+
+class Solution {
+public:
+    string minWindow(string s1, string s2) {
+
+        int n = s1.size();
+        int m = s2.size();
+
+        int minLen = INT_MAX;
+        int startIndex = -1;
+
+        int i = 0;
+
+        while(i < n){
+
+            int j = 0;
+
+            // FORWARD MATCHING
+            while(i < n){
+
+                if(s1[i] == s2[j]){
+                    j++;
+                }
+
+                // full subsequence matched
+                if(j == m){
+                    break;
+                }
+
+                i++;
+            }
+
+            // no subsequence found
+            if(i == n) break;
+
+            // ending index of valid window
+            int end = i;
+
+            // BACKWARD SHRINKING
+            j = m - 1;
+
+            while(j >= 0){
+
+                if(s1[i] == s2[j]){
+                    j--;
+                }
+
+                i--;
+            }
+
+            // correct starting index
+            i++;
+
+            // update minimum window
+            int len = end - i + 1;
+
+            if(len < minLen){
+                minLen = len;
+                startIndex = i;
+            }
+
+            // continue searching
+            i++;
+        }
+
+        if(startIndex == -1){
+            return "";
+        }
+
+        return s1.substr(startIndex, minLen);
+    }
+};
