@@ -1,0 +1,38 @@
+The main idea is that, its a directed acyclic graph. They are in one order. 
+
+class Solution {
+public:
+
+    vector<int> topoSort(int V, vector<int> adj[]) {
+
+   vector<int>indgree(V,0);
+
+for(int u = 0; u<V; u++){   //Calculate the indegree of each nodes
+for(int v:adj[u]){
+indegree[v]++;
+}
+
+  queue<int> q;
+        for(int i = 0; i < V; i++) {       //For all indgree == 0 push into queue
+            if(indegree[i] == 0) {
+                q.push(i);
+            }
+        }
+
+vector<int>answer;     
+while(!q.empty()){           //The changes when we push indegree node to queue on the rest of node
+int node = q.front();
+            q.pop();
+            ans.push_back(node);
+  for(int[neighbours]:adj[node]){
+  indegree[neighbours]--;
+
+  if(indegree[neighbour] == 0) {
+  q.push(neighbour);
+    }
+  }
+}
+
+        return ans;
+    }
+};
