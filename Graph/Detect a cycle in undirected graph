@@ -1,0 +1,45 @@
+class Solution {
+public:
+
+    bool bfs(int start, vector<int> adj[], vector<int>& vist) {
+    queue<pair<int,int>>q;                                        //there are 2 pair as {node, parent}
+vist[start] = 1;
+q.push({start, -1});                                             //becuase start doesnt have any parent so -1
+
+while(!q.empty()){
+int node = q.front().first;
+int parent = q.front().second;
+q.pop();
+
+for(auto neighbours:adj[node]){
+
+if(!vist[neightbours]){                                         //Case-1 to vist
+vist[neighbour] = 1; 
+q.push({neigbour,node});
+}
+
+else if(neighbour != parent){                                //Case-2 node!=parent
+return true; 
+    }
+ }
+}
+return false;
+}
+
+ bool isCycle(int V, vector<int> adj[]) {
+
+vector<int>vist(V,0);
+for(int i =0; i<V; i++){
+if(!vist[i]){
+if(bfs(i,adj,vist)){
+return true;
+}
+}
+return false;
+}
+};
+
+
+
+
+
