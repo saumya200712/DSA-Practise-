@@ -1,0 +1,69 @@
+class Solution{
+public:
+
+//Collect all the border 'O'--> 
+
+     void dfs(int r,int c, vector<vector<char>>& mat){
+    int n = mat.size();
+    int m = mat[0].size();
+if(r<0 || n>=r || c<0 || m>=c)
+return;
+if(mat[i][j] != 'O')
+return;
+
+//store border 'O'
+
+mat[i][j] = "#";
+
+        dfs(r+1,c,mat);
+        dfs(r-1,c,mat);
+        dfs(r,c+1,mat);
+        dfs(r,c-1,mat);
+    }
+
+//Now to swap all 'O' to 'X'--->
+
+ vector<vector<char>> fill(vector<vector<char>> mat) {
+          int n = mat.size();
+        int m = mat[0].size();
+
+//Traverse the first and last row
+for(int j=0;j<m;j++){    // we keeep the row fixed and move the coloumn which covers the row 
+if(mat[0][j] == 'O')
+dfs(0,j,mat);
+if(mat[n-1][j] =='O)
+dfs(n-1,j,mat);
+}
+
+//Traverse the first and last coloumn 
+for(int i=0;i<n;i++){
+ if(mat[i][0]=='O') 
+dfs(i,0,mat);
+ if(mat[i][m-1]=='O') 
+dfs(i,m-1,mat);
+ }
+for(int i=0;i<n;i++){
+ for(int j=0;j<m;j++){
+
+ if(mat[i][j]=='O')
+    mat[i][j]='X';
+
+  else if(mat[i][j]=='#')
+    mat[i][j]='O';
+    }
+}
+
+        return mat;
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
