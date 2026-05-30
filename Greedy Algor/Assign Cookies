@@ -1,0 +1,25 @@
+class Solution{    
+    public:
+    int findMaximumCookieStudents(vector<int>& Student, vector<int>& Cookie){
+    sort(Student.begin(), Student.end());
+   sort(Cookie.begin(),Cookie.end());
+int count = 0;
+int i =0;
+int j = 0;
+
+while(i<Student.size() && j<Cookie.size()){
+
+if(Cookie[j]>=Student[i]){
+
+count++;
+i++;
+j++;
+}
+
+else{    // if the current cookie is small we move further ahead to try other cookies for the same stduent
+j++;
+ }
+}
+return count;
+ }
+};
