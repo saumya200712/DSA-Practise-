@@ -1,0 +1,23 @@
+void postorder(TreeNode* root, vector<int>& ans){
+
+    if(root == NULL)
+        return;
+
+    postorder(root->left, ans);
+
+    postorder(root->right, ans);
+
+    ans.push_back(root->data);
+}
+
+void inorder(TreeNode* root, vector<int>& ans){
+
+    if(root == NULL)
+        return;
+
+    inorder(root->left, ans);
+
+    ans.push_back(root->data);
+
+    inorder(root->right, ans);
+}
