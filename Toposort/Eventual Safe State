@@ -1,0 +1,67 @@
+#Terminal node is the node which doesnt have any OUTGOING edge 
+#Safe node is the one that gets started and eventually reaches to Terminal node 
+EXAMPLE- 
+0 -> 1 -> 2
+          |
+          v
+        Terminal
+Here:
+2 is safe (terminal)
+1 is safe (goes to 2)
+0 is safe (goes to 1 → 2)
+
+##MAIN IDEA
+We reverse the gaph, so that we tell backward the node that they are safe. Like 2 is safe to tell 1 u r safe we move backward so we just
+rverse the graph. And indegree in reverse is SAME as outgoing in normal graph. 
+
+The logic is:
+Reverse the graph.
+Find all terminal nodes (outdegree = 0 in original graph). & (indegree in the revse graph)
+Put them in queue.
+Process parents.
+Whatever gets processed is safe.
+
+class Solution {
+public:
+    vector<int> eventualSafeNodes(int V, vector<int> adj[]) {
+
+        vector<int> revAdj[V];
+        vector<int> indegree(V, 0);
+
+        // Reverse the graph
+        for(int u = 0; u < V; u++) {
+            for(auto v : adj[u]) {
+                revAdj[v].push_back(u);
+                indegree[u]++;   // original outdegree
+            }
+        }
+
+        queue<int> q;
+
+        // Terminal nodes
+        for(int i = 0; i < V; i++) {
+            if(indegree[i] == 0)
+                q.push(i);
+        }
+
+        vector<int> ans;
+
+        while(!q.empty()) {
+            int node = q.front();
+            q.pop();
+
+            ans.push_back(node);
+
+            for(auto parent : revAdj[node]) {
+                indegree[parent]--;
+
+                if(indegree[parent] == 0)
+                    q.push(parent);
+            }
+        }
+
+        sort(ans.begin(), ans.end());
+
+        return ans;
+    }
+};
