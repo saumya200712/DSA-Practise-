@@ -1,0 +1,71 @@
+vector<int> levelOrder(TreeNode* root) {
+
+    vector<int> ans;
+
+    if(root == NULL)
+        return ans;
+
+    queue<TreeNode*> q;
+
+    q.push(root);
+
+    while(!q.empty()) {
+
+        TreeNode* node = q.front();
+        q.pop();
+
+        ans.push_back(node->data);
+
+        if(node->left)
+            q.push(node->left);
+
+        if(node->right)
+            q.push(node->right);
+    }
+
+    return ans;
+}
+
+
+
+
+
+DRY RUN-->
+Let's slow down and trace ONE iteration.
+Tree:
+
+      1
+     / \
+    2   3
+
+Step 0
+
+We start with:
+
+q.push(root);
+
+which means:
+
+Queue = [1]
+Ans = []
+Step 1
+TreeNode* node = q.front();
+q.pop();
+
+Take out 1:
+
+Queue = []
+node = 1
+Step 2
+ans.push_back(node->data);
+
+Put 1 into answer:
+
+Ans = [1]
+
+Notice:
+
+Queue = []
+Ans = [1]
+
+These are TWO DIFFERENT THINGS
