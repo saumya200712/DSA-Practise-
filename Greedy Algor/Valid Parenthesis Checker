@@ -1,0 +1,69 @@
+Use two variables:
+
+mini = minimum possible open brackets
+maxi = maximum possible open brackets
+Why?
+
+For *, we don't know whether it is:
+
+'('
+')'
+'' (empty)
+
+So we keep a range of possible open brackets.
+If ch == '*'
+Worst case it acts as ')'
+mini--;
+Best case it acts as '('
+maxi++;
+So:
+
+mini--;
+maxi++;
+
+If
+maxi < 0
+That means we have more ) than possible (.
+Return: false;
+
+class Solution {
+public:
+    bool isValid(string s) {
+
+        int mini = 0;    //minimum possible open brackets
+        int maxi = 0;    // max possible open bracket 
+
+        for(char ch : s) {
+
+          
+            if(ch == '(') {
+                mini++;
+                maxi++;
+            }
+
+      
+            else if(ch == ')') {
+                mini--;
+                maxi--;
+            }
+
+            // star
+            else { 
+                mini--;
+                maxi++;
+            }
+
+           
+            if(maxi < 0) {
+                return false;
+            }
+
+           
+            if(mini < 0) {
+                mini = 0;
+            }
+        }
+
+        return mini == 0;
+    }
+};
