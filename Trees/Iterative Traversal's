@@ -1,0 +1,69 @@
+Pre-Order
+Steps
+Push root into stack.
+While stack is not empty:
+Pop top node.
+Add it to answer.
+Push right child first.
+Push left child second
+CODE-->
+vector<int> preorderTraversal(TreeNode* root) {
+    vector<int> ans;
+
+    if(root == NULL)
+        return ans;
+
+    stack<TreeNode*> st;
+    st.push(root);
+
+    while(!st.empty()) {
+        TreeNode* node = st.top();
+        st.pop();
+
+        ans.push_back(node->val);
+
+        if(node->right)
+            st.push(node->right);
+
+        if(node->left)
+            st.push(node->left);
+    }
+
+    return ans;
+}
+
+
+
+InOrder--> Start with curr = root.
+Keep pushing nodes while moving left.
+When left becomes NULL:
+Pop from stack.
+Visit that node.
+Move to its right child.
+Repeat until:
+stack is empty AND
+curr is NULL
+
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> ans;
+    stack<TreeNode*> st;
+
+    TreeNode* curr = root;
+
+    while(curr != NULL || !st.empty()) {
+
+        while(curr != NULL) {
+            st.push(curr);
+            curr = curr->left;
+        }
+
+        curr = st.top();   //after left becomes NULL Pop the root node 
+        st.pop();
+
+        ans.push_back(curr->val);
+
+        curr = curr->right;
+    }
+
+    return ans;
+}
