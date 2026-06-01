@@ -1,0 +1,32 @@
+# We perform postorder traversal here. 
+The optimized mehtod is to not have to vist same node several time. Cuurent complexity is O(N) In normal way would be O(N2)
+class Solution{
+public:
+       int height(TreeNode* root){
+
+        if(root==NULL)
+        return 0;
+
+        int leftHeight = height(root->left);
+
+        if(leftHeight==-1)         //subtree below may already be unbalanced. We want to immediately propagate
+                                       that information upward without doing any more unnecessary checks
+        return -1;
+
+        int rightHeight = height(root->right);
+
+        if(rightHeight == -1)
+        return -1;
+
+      if(abs(leftHeight - rightHeight) > 1)
+       return -1;
+       
+       return 1+ max(leftHeight, rightHeight);
+       }
+
+
+
+    bool isBalanced(TreeNode *root){
+    	return height(root) != -1;
+    }
+};
