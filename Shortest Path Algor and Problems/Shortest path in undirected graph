@@ -1,0 +1,42 @@
+class Solution {
+  public:
+    vector<int> shortestPath(vector<vector<int>>& edges, int N,int M){
+   vector<vector<int>> adj(N);
+
+   for(auto edge:edges){
+      int u = edge[0];
+      int v = egde[1];
+
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+  
+   }
+       vector<int> dist(N, 1e9);          //1e9 == infinity of the distance 
+           queue<int> q;
+        dist[0] = 0;  //source ka disatnce is 0
+       q.push(0);
+      
+
+     while(!q.empty()){
+     int node = q.front():
+      q.pop();
+     for(auto neighbour:adj[node]){
+
+     if(dist[node]+1 < dist[neighbour]){
+     dist[neighbour] = dist[node]+1;
+     q.push(node);
+
+
+             }
+           }
+        }
+           //Check every node. If its distance is still infinity, mark it unreachable.
+           for(int node = 0; node < N; node++){
+            if(dist[node] == 1e9){
+               dist[node] = -1;
+           
+       }
+   }
+        return dist;
+    }
+};
