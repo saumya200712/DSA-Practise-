@@ -1,0 +1,32 @@
+## Binary:
+13 = 1101
+      ↑
+    bit 2
+(Bit positions start from 0 on the right)
+3 2 1 0
+1 1 0 1
+
+Create a mask with only the i-th bit set.
+1 << i
+
+For i = 2:
+0001 << 2   (1*2^2 = 4)
+0100
+
+Now AND it with n.
+1101
+0100
+----
+0100
+Result is non-zero.
+Therefore bit is set.
+
+CODE-->
+class Solution {
+public:
+    bool checkIthBit(int n, int i) {
+       
+       if(n & (1<<i))
+       return true;
+    }
+};
