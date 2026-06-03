@@ -1,0 +1,19 @@
+A binary tree can be uniquely constructed only when one traversal is Inorder and the other is either Preorder or Postorder.
+Why?
+
+Inorder tells us how nodes are split into left and right subtrees.
+Preorder/Postorder tells us the root.
+
+Shorter version--> return (a != b) && (a == 2 || b == 2);
+
+or
+
+class Solution{	
+	public:	
+		bool uniqueBinaryTree(int a, int b){
+           if(a == b) return false;
+           if((a == 1 && b == 3) || (a == 3 && b == 1))
+           return false;
+
+return true;		}
+};
