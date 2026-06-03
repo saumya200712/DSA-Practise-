@@ -1,0 +1,16 @@
+// Key Observation
+The last bit decides whether a number is odd or even.
+Even numbers end with 0
+Odd numbers end with 1
+
+How to check the last bit?
+Use:
+n & 1
+
+class Solution {
+public:
+    bool isOdd(int n) {
+       
+        return (n&1) != 0;
+    }
+};
