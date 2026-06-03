@@ -1,0 +1,17 @@
+int xorAll = 0;
+
+for(int number : nums)
+    xorAll ^= number;
+
+int rightMostSetBit = xorAll & (-xorAll);
+
+int firstUnique = 0;
+int secondUnique = 0;
+
+for(int number : nums)
+{
+    if(number & rightMostSetBit)
+        firstUnique ^= number;
+    else
+        secondUnique ^= number;
+}
