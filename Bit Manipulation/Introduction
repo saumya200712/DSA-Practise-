@@ -1,0 +1,114 @@
+Why Bit Manipulation?
+
+Computers store everything as bits:
+
+5 = 101
+6 = 110
+7 = 111
+
+Bit Manipulation means using operators to directly work on these bits.
+
+The main operators are:
+
+&   AND
+|   OR
+^   XOR
+~   NOT
+<<  Left Shift
+>>  Right Shift
+
+& OPERATOR->
+
+Rule:
+1 & 1 = 1
+1 & 0 = 0
+0 & 1 = 0
+0 & 0 = 0
+EXAMPLE->
+Binary:
+
+5 = 101
+3 = 011
+---------
+    001
+
+Answer- 1  //if the numbers are odd
+
+2. OR (|)
+
+Rule:
+
+1 | 1 = 1
+1 | 0 = 1
+0 | 1 = 1
+0 | 0 = 0
+
+Example:
+
+101
+011
+---
+111
+
+Answer:
+5 | 3 = 7
+
+3. XOR (^)
+
+Most important operator.
+Rule:
+
+1 ^ 1 = 0
+0 ^ 0 = 0
+1 ^ 0 = 1
+0 ^ 1 = 1
+
+Same bits → 0
+
+Different bits → 1
+
+*****IMPOR*****
+a ^ a = 0
+
+a ^ b ^ a = b
+Because:
+(a ^ a) ^ b
+= 0 ^ b
+= b
+
+
+4. Left Shift (<<)
+n << k
+Means shift bits left by k places.
+
+Example:
+
+5 = 101
+5 << 1
+1010
+
+Answer: 10
+
+Shortcut:
+n << k = n * (2^k)
+
+Example:
+
+5 << 3
+= 5 * 8
+= 40
+
+
+5. Right Shift (>>)
+Example:
+
+8 = 1000
+
+8 >> 1
+0100
+
+Answer:4
+
+Shortcut: n >> k = n / (2^k)
+
+
