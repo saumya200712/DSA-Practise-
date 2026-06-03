@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int calPoints(vector<string>& operations) {
+
+        stack<int> scores;
+
+        for(string operation : operations) {
+
+            if(operation == "C") {
+
+                scores.pop();
+
+            }
+            else if(operation == "D") {
+
+                scores.push(2 * scores.top());
+
+            }
+            else if(operation == "+") {
+
+                int latestScore = scores.top();
+                scores.pop();
+
+                int newScore = latestScore + scores.top();
+
+                scores.push(latestScore);
+                scores.push(newScore);
+
+            }
+            else {
+
+                scores.push(stoi(operation));
+            }
+        }
+
+        int totalScore = 0;
+
+        while(!scores.empty()) {
+            totalScore += scores.top();
+            scores.pop();
+        }
+
+        return totalScore;
+    }
+};
