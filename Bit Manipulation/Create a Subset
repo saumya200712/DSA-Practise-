@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+
+        int n = nums.size();
+
+        vector<vector<int>> answer;
+
+        for(int mask = 0; mask < (1 << n); mask++)
+        {
+            vector<int> currentSubset;
+
+            for(int bit = 0; bit < n; bit++)
+            {
+                if(mask & (1 << bit))
+                {
+                    currentSubset.push_back(nums[bit]);
+                }
+            }
+
+            answer.push_back(currentSubset);
+        }
+
+        return answer;
+    }
+};
