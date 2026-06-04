@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int data;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *      TreeNode(int val) : data(val) , left(nullptr) , right(nullptr) {}
+ * };
+ **/
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+
+       if(root->data == p->data || root->data == q->data)  //if we found at the strating only
+        return root;
+
+         if(!root->left && root->right) //if leaf node
+        return NULL;
+
+        //Then we search both the side of bt as left side and right to match the value of p and q 
+
+        TreeNode* left = NULL;
+        TreeNode* right =NULL;
+
+        if(root->left)
+        left = lowestCommonAncestor( root ->left,  p,  q);
+
+       if(root->right)
+       right =  lowestCommonAncestor( root ->right,  p,  q);
+
+     //finally if both left and right matcges with the value the root is lowestCommonAncestor
+
+      if(left && right)
+        return root;
+
+    return left ? left : right  ;
+}
+      
+};
