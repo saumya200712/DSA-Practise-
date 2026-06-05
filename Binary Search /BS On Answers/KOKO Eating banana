@@ -1,0 +1,36 @@
+class Solution {
+public:
+
+bool canEatBanana(vector<int> nums, int mid, int h){
+    int actualHour= 0;
+
+    for(int &x : nums){
+        actualHour += x/mid;    //har ek pile mei kitna time lageiga. Yeh hours dega
+
+        if(x%mid != 0){   //agar utnei hpur leo baad bhi banana bach gayei so 
+         actualHour++;
+
+
+        }
+    }
+    return actualHour<=h;
+}
+
+
+int minimumRateToEatBananas(vector<int> nums, int h) {
+   int low = 1;
+   int high = *max_element(nums.begin(), nums.end()); // the max range of bananas avaible
+
+   while(low<high){
+    int mid = (low+high)/2;
+
+    if(canEatBanana(nums,mid,h)){
+        high = mid;    //means mid aur uskei aage time mei hee sarei banana kaa legi
+    }
+    else{
+        low= mid+1;  // ya toh aagei bado 
+    }
+   }
+    return low;
+}
+};
