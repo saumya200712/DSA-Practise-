@@ -1,0 +1,12 @@
+class Solution {
+public:
+
+    int countOccurrences(vector<int>& arr, int target) {
+
+        int lb = lower_bound(arr.begin(), arr.end(), target) - arr.begin(); // to convert to count from index
+
+        int ub = upper_bound(arr.begin(), arr.end(), target) - arr.begin();
+
+        return ub - lb;
+    }
+};
