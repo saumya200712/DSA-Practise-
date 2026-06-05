@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+
+        int low = 0;
+        int high = nums.size() - 1;
+
+        while(low < high){
+
+            int mid = (low + high) / 2;
+
+            if(nums[mid] > nums[high]){ // means mid kei taraf kei elements badei hai
+                low = mid + 1;
+            }
+
+            else{
+                high = mid; // but if the mid is smaller than high, so even mid could be min element, and with high = mid-1 we would disacrd it 
+            }
+        }
+
+        return nums[low];
+    }
+};
