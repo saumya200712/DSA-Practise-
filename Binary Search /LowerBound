@@ -1,0 +1,27 @@
+### The lower bound algorithm finds the first and smallest index in a sorted array where the value at that index is 
+greater than or equal to a given key i.e. x
+
+class Solution{
+public:
+    int lowerBound(vector<int> &nums, int x){
+        int n = nums.size();
+        int low=0;
+        int high = n-1;
+        int ans = n;
+
+        while(low<high){
+           int mid = (low + high)/2;
+
+           if(nums[mid] >= x){
+            ans = mid;
+            high = mid-1;
+            
+           }
+           else {
+           low = mid+1;   //if we didnt found nay value in the mid, maybe we could have similar value in array eg 1,2,2,3 so the 2 at index 1 is lowerboudn
+           }
+        }
+
+        return ans;
+    }
+};
