@@ -1,0 +1,48 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int data;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *      TreeNode(int val) : data(val) , left(nullptr) , right(nullptr) {}
+ * };
+ **/
+
+class Solution{
+	public:
+		vector<int> preorder(TreeNode* root){
+	       vector<int>ans;
+           while(root != NULL){
+
+           if(root->left ==NULL){
+            ans.push_back(root->right);
+            root= root->right;    //cus its preorder so no need to bracktarck
+           }
+
+           else{   //if left exist we need to go back to right but we cant traverse through recursion so uses predecessor, as left subtree ka right node
+
+            TreeNode* predecessor = root->left;
+            
+            while(predecessor->right !=NULL && predecessor != root){
+                 predecessor = predecessor->right;
+                
+            }
+            if (predecessor->right == NULL) {
+
+                    ans.push_back(root->val);   // preorder difference
+
+                    predecessor->right = root;
+                    root = root->left;
+                }
+                else {
+
+                    predecessor->right = NULL;
+                    curr = curr->right;
+                }
+
+           }
+
+           }
+           return ans;
+   }
+};
