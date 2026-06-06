@@ -1,0 +1,26 @@
+class Solution{
+public:
+
+   bool checkBST(TreeNode* root, long long lowerBound, long long upperBound) {
+
+    if(root == nullptr)
+    return true;
+
+    if(root->data <=lowerBound || root->data >= upperBound)
+    return false;
+
+    bool leftBST =
+    checkBST(root->left, lowerBound, root->data);
+
+     bool rightBST =
+      checkBST(root->right, upperBound, root->data);
+
+      return leftBST , rightBST;
+   }
+
+		bool isBST(TreeNode* root){
+            
+	   bool checkBST( root,  LLONG_MIN, LLONG_MAX);
+
+	}
+};
