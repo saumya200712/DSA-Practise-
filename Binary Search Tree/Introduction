@@ -1,0 +1,24 @@
+Definition
+
+A Binary Search Tree is a binary tree where:
+
+Left Subtree  < Root
+Right Subtree > Root
+
+for every node.
+
+Why BST Is Powerful
+
+In Binary Tree:
+
+Search = O(N)
+
+In BST:
+
+Search = O(H)
+
+where H = height.
+
+Balanced BST:
+
+O(log N)
