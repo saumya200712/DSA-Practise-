@@ -1,0 +1,30 @@
+Floor Value Node: Node with the greatest data lesser than or equal to the key value. 
+
+Ceil Value Node: Node with the smallest data larger than or equal to the key value.
+
+
+
+class Solution{	
+	public:
+		vector<int> floorCeilOfBST(TreeNode* root,int key){
+			int floor = -1;
+            int ceil = -1;
+while(root){
+            if(root->data == key){
+                floor = key;
+                ceil = key;
+                break;
+            }
+            if(key < root->data){
+                ceil = root->data; 
+                root = root->left;
+
+            }
+            else{
+                floor = root->data;
+                root = root->right;
+            }
+      }
+      return {floor,ceil};
+		}
+};
