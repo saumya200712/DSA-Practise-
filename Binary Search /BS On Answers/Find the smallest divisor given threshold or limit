@@ -1,0 +1,40 @@
+class Solution {
+public:
+
+  bool isDivisible(vector<int>& nums, int limit, int divisor) {
+
+    int sum = 0;
+
+    for(int num : nums) {
+        sum += num / divisor;   // for a perfectly divisble element
+
+        if(num % divisor != 0)    // if theres a reminder, we round it off
+            sum++;
+    }
+
+    return sum <= limit;   // the condotion to be met
+}
+
+    int smallestDivisor(vector<int>& nums, int limit) {
+
+        int low = 1;
+        int high = *max_element(nums.begin(), nums.end());
+
+        int ans = high;
+
+        while(low <= high) {
+
+            int mid = low + (high - low) / 2;
+
+            if(isDivisible(nums, limit, mid)) {    //if conditon is met 
+                ans = mid;
+                high = mid - 1;      // try smaller divisor
+            }
+            else {
+                low = mid + 1;       // need larger divisor
+            }
+        }
+
+        return ans;
+    }
+};
