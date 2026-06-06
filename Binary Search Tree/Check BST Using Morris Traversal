@@ -1,0 +1,46 @@
+class Solution {
+public:
+    bool isBST(TreeNode* root) {
+
+        
+        long long previousValue = LLONG_MIN;
+
+        while(root) {
+
+            if(root->left == nullptr) {    //NO LEFT CHILD
+
+                if(root->data <= previousValue)  //INORDER MAY PREVIOUS VALUE SHOULD ALWAYS BE LESS 
+                    return false;
+
+                previousValue = root->data;
+                root = root->right;
+            }
+            else {                                    //WE HAVE LEFT CHILD
+
+                TreeNode* predecessor = current->left;
+
+                while(predecessor->right && predecessor->right != root) {
+                    predecessor = predecessor->right;
+                }
+
+                if(predecessor->right == nullptr) {   //WE DONT HAVE LEFT SUBTREE RIGHT CHILD
+
+                    predecessor->right = root;
+                    root = root->left;
+                }
+                else {
+
+                    predecessor->right = nullptr;
+
+                    if(root->data <= previousValue)
+                        return false;
+
+                    previousValue = root->data;
+                    root = root->right;
+                }
+            }
+        }
+
+        return true;
+    }
+};
