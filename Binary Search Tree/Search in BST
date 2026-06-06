@@ -1,0 +1,67 @@
+Suppose we need:
+Find 10
+
+Tree:
+
+        8
+      /   \
+     5     12
+          /
+         10
+
+Process:
+10 > 8
+Go Right
+
+10 < 12
+Go Left
+
+Found
+
+Intuition
+At every node:
+
+if(target < node)
+    left
+
+if(target > node)
+    right
+Half tree gets discarded.
+
+
+Why iterative?
+
+Recursive: O(H) stack
+Iterative: O(1) space
+
+Iterative function-->
+class Solution {	
+public:	
+    TreeNode* searchBST(TreeNode* root, int val) {
+    	while(root){
+       
+       if(root->data == val)
+       return root;
+
+       if(val < root->data){
+        root = root->left;
+       }
+       else{
+       root = root->right;
+       }
+        }
+       return NULL;
+    }
+};
+
+Recursive function-->
+TreeNode* searchBST(TreeNode* root, int val) {
+
+    if(root == NULL || root->val == val)
+        return root;
+
+    if(val < root->val)
+        return searchBST(root->left, val);
+
+    return searchBST(root->right, val);
+}
