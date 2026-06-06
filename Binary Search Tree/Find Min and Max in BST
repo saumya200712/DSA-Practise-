@@ -1,0 +1,15 @@
+TreeNode* findMin(TreeNode* root) {
+
+    while(root->left)
+        root = root->left;
+
+    return root;
+}
+
+TreeNode* findMax(TreeNode* root) {
+
+    while(root->right)
+        root = root->right;
+
+    return root;
+}
