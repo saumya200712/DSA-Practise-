@@ -1,0 +1,87 @@
+Here kth meaning rank. 
+Like in [1,2,3,4,5]
+the 1st smallest is 1 and then 2 and then 3 
+and the 1 largets is 5 then 2nd largest is 4 and so......
+
+Brute force- simple inorder traversal will give smallest and largets value 
+class Solution {
+public:
+    void inorder(TreeNode* root, vector<int>& values) {
+        if(root == nullptr) return;
+
+        inorder(root->left, values);
+        values.push_back(root->data);
+        inorder(root->right, values);
+    }
+
+    vector<int> kLargestSmall(TreeNode* root, int k) {
+
+        vector<int> values;
+        inorder(root, values);
+
+        int kthSmallest = values[k - 1];
+        int kthLargest = values[values.size() - k]; 
+
+        return {kthSmallest, kthLargest};
+    }
+};
+
+
+Optimal approach- of two traversal, inorder amd reverse inorder 
+class Solution {
+public:
+
+    void findKthSmallest(TreeNode* root,
+                         int k,
+                         int& count,
+                         int& answer) {
+
+        if(root == nullptr || count >= k)
+            return;
+
+        findKthSmallest(root->left, k, count, answer);
+
+        count++;
+
+        if(count == k) {
+            answer = root->data;
+            return;
+        }
+
+        findKthSmallest(root->right, k, count, answer);
+    }
+
+    void findKthLargest(TreeNode* root,
+                        int k,
+                        int& count,
+                        int& answer) {
+
+        if(root == nullptr || count >= k)
+            return;
+
+        findKthLargest(root->right, k, count, answer);
+
+        count++;
+
+        if(count == k) {
+            answer = root->data;
+            return;
+        }
+
+        findKthLargest(root->left, k, count, answer);
+    }
+
+    vector<int> kLargestSmall(TreeNode* root, int k) {
+
+        int kthSmallest = -1;
+        int kthLargest = -1;
+
+        int count = 0;
+        findKthSmallest(root, k, count, kthSmallest);
+
+        count = 0;
+        findKthLargest(root, k, count, kthLargest);
+
+        return {kthSmallest, kthLargest};
+    }
+};
