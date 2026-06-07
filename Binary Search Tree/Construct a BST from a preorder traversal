@@ -1,0 +1,123 @@
+Brute force- O(N2) Cus array get scanned twice 
+class Solution {
+public:
+
+    TreeNode* build(vector<int>& preorder, int start, int end) {
+
+        if(start > end)
+            return nullptr;
+
+        TreeNode* root = new TreeNode(preorder[start]);
+
+        int splitIndex = start + 1;
+
+        while(splitIndex <= end &&
+              preorder[splitIndex] < root->data) {
+            splitIndex++;
+        }
+
+        root->left =
+            build(preorder, start + 1, splitIndex - 1);
+
+        root->right =
+            build(preorder, splitIndex, end);
+
+        return root;
+    }
+
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+
+        return build(preorder, 0, preorder.size() - 1);
+    }
+};
+
+
+
+
+OPTIMAL--> The most important thing to remember is:
+
+build(bound)eans:
+
+"Keep creating nodes while values are ≤ bound."
+
+class Solution {
+public:
+
+    TreeNode* build(vector<int>& preorder,
+                    int& index,
+                    int bound) {
+
+        if(index == preorder.size() ||
+           preorder[index] > bound)
+            return nullptr;
+
+        TreeNode* root =
+            new TreeNode(preorder[index++]);
+
+        root->left =
+            build(preorder, index, root->data);
+
+        root->right =
+            build(preorder, index, bound);
+
+        return root;
+    }
+
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+
+        int index = 0;
+
+        return build(preorder, index, INT_MAX);
+    }
+};
+
+
+
+Another way is of MONOTONIC STACK optimal method of O(N) compleixty.
+TreeNode* bstFromPreorder(vector<int>& preorder) {
+
+    TreeNode* root = new TreeNode(preorder[0]);
+
+    stack<TreeNode*> nodeStack;
+    nodeStack.push(root);
+
+    for(int index = 1; index < preorder.size(); index++) {
+
+        TreeNode* currentNode =
+            new TreeNode(preorder[index]);
+
+        TreeNode* parentNode = nullptr;
+
+        while(!nodeStack.empty() &&
+              nodeStack.top()->data < preorder[index]) {
+
+            parentNode = nodeStack.top();
+            nodeStack.pop();
+        }
+
+        if(parentNode != nullptr)
+            parentNode->right = currentNode;
+        else
+            nodeStack.top()->left = currentNode;
+
+        nodeStack.push(currentNode);
+    }
+
+    return root;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
