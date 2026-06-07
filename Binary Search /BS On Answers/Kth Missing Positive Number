@@ -1,0 +1,73 @@
+Naive Approach - O(N) 2-Pointer Approach
+
+class Solution {
+public:
+    int findKthPositive(vector<int>& nums, int k) {
+
+  int n = nums.size();
+  int num=1;    //this checks which number we are missing
+int i =0;
+
+while(i<n && k>0){  //if k==0, that means we found the missing element
+
+if(nums[i] == num){   //if match that means in the array
+i++;   //pointer ko move forward to check the further number in the array
+}
+else{
+k--;     // else reduce the kth value, that is the one of the missing value is founded
+}
+num++;   //num are 1 to whatever is the last larger number in teh array, we check all from 1 to.. to see which is missing
+}
+
+//IF OUT OF BOUND MISSING NUMBER
+
+while(k--){
+num++;
+}
+
+return num-1;   //-1 bcz har baar num++ hooga so ek extra num milljayega but we need only the required missing number.
+    }
+};
+
+OPTIMAL Approach - O(logN) Binary Search Approach
+
+WE find how many numbers are issing on both side of MID, if its less than k so we move to right, ese to the left.
+
+class Solution {
+public:
+    int findKthPositive(vector<int>& arr, int k) {
+        int low = 0;
+        int high = arr.size()-1;
+
+        int mid=-1;
+
+        while(low<=high){
+            int mid = (low+high)/2;
+      
+      int how_many_missing_number_till_mid = arr[mid] - (mid+1);  //formula to claualte the number of missing number
+
+      if(how_many_missing_number_till_mid < k){ //move right
+        low = mid+1;
+      }
+      else{
+        high = mid-1;
+      }
+
+  }
+
+  return low+k;   //left me missing number + jitnei honei chaiyeh thei
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
