@@ -1,0 +1,66 @@
+Brute Force--Treat like normal tree  Forget that it's a BST.
+For every node:
+Check if p exists in left subtree.
+Check if q exists in left subtree.
+Check if they are on different sides.
+
+Time = O(N²)
+Space = O(H)
+
+Better Brute Force
+Find path from root to p.
+Find path from root to q.
+Then compare both paths.
+
+Time- O(N)
+
+
+OPTIMAL-
+TreeNode* lca(TreeNode* root, int p, int q)
+{
+    while(root)
+    {
+        if(p < root->data && q < root->data)
+            root = root->left;
+
+        else if(p > root->data && q > root->data)
+            root = root->right;
+
+        else
+            return root;
+    }
+
+    return NULL;
+}
+
+
+foR EVERY NODE-
+Case 1
+
+Both smaller
+
+p < root
+q < root
+
+Go left.
+
+Case 2
+
+Both larger
+
+p > root
+q > root
+
+Go right.
+
+Case 3
+
+They split
+
+p < root < q
+
+or
+
+q < root < p
+
+Current node is LCA.
