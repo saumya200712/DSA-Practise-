@@ -1,0 +1,59 @@
+successor means: Next element in inorder traversal
+
+Actual Rule---
+
+Predecessor
+
+Go left once.
+Then keep going right as much as possible.
+
+Successor
+
+Go right once.
+Then keep going left as much as possible.
+
+vector<int> succPredBST(TreeNode* root, int key)
+{
+    int pred = -1;
+    int succ = -1;
+
+    TreeNode* current = root;
+
+    while(current)
+    {
+        if(key < current->data)
+        {
+            succ = current->data;
+            current = current->left;
+        }
+        else if(key > current->data)
+        {
+            pred = current->data;
+            current = current->right;
+        }
+        else
+        {
+            // predecessor
+            TreeNode* leftSubtree = current->left;
+
+            while(leftSubtree)
+            {
+                pred = leftSubtree->data;
+                leftSubtree = leftSubtree->right;
+            }
+
+            // successor
+            TreeNode* rightSubtree = current->right;
+
+            while(rightSubtree)
+            {
+                succ = rightSubtree->data;
+                rightSubtree = rightSubtree->left;
+            }
+
+            break;
+        }
+    }
+
+    return {pred, succ};
+}
