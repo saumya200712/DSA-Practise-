@@ -1,0 +1,97 @@
+BRUTE FORCE-->
+
+vector<int> mergeArrays(vector<int>& firstArray,
+                        vector<int>& secondArray)
+{
+    vector<int> mergedArray;
+
+    int firstIndex = 0;
+    int secondIndex = 0;
+
+    while(firstIndex < firstArray.size() &&
+          secondIndex < secondArray.size())
+    {
+        if(firstArray[firstIndex] <= secondArray[secondIndex])
+        {
+            mergedArray.push_back(firstArray[firstIndex++]);
+        }
+        else
+        {
+            mergedArray.push_back(secondArray[secondIndex++]);
+        }
+    }
+
+    while(firstIndex < firstArray.size())
+        mergedArray.push_back(firstArray[firstIndex++]);
+
+    while(secondIndex < secondArray.size())
+        mergedArray.push_back(secondArray[secondIndex++]);
+
+    return mergedArray;
+}
+
+
+OPTIMAL METHOD--> USING 2 ITERATOR TO GET THE SMALLEST VALUE 
+vector<int> mergeBST(TreeNode* root1, TreeNode* root2)
+{
+    BSTIterator iterator1(root1);
+    BSTIterator iterator2(root2);
+
+    vector<int> mergedValues;
+
+    bool hasFirst = iterator1.hasNext();
+    bool hasSecond = iterator2.hasNext();
+
+    int firstValue = 0;
+    int secondValue = 0;
+
+    if(hasFirst)
+        firstValue = iterator1.next();
+
+    if(hasSecond)
+        secondValue = iterator2.next();
+
+    while(hasFirst && hasSecond)
+    {
+        if(firstValue <= secondValue)
+        {
+            mergedValues.push_back(firstValue);
+
+            hasFirst = iterator1.hasNext();
+
+            if(hasFirst)
+                firstValue = iterator1.next();
+        }
+        else
+        {
+            mergedValues.push_back(secondValue);
+
+            hasSecond = iterator2.hasNext();
+
+            if(hasSecond)
+                secondValue = iterator2.next();
+        }
+    }
+
+    while(hasFirst)
+    {
+        mergedValues.push_back(firstValue);
+
+        hasFirst = iterator1.hasNext();
+
+        if(hasFirst)
+            firstValue = iterator1.next();
+    }
+
+    while(hasSecond)
+    {
+        mergedValues.push_back(secondValue);
+
+        hasSecond = iterator2.hasNext();
+
+        if(hasSecond)
+            secondValue = iterator2.next();
+    }
+
+    return mergedValues;
+}
