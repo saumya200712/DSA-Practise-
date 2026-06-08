@@ -1,0 +1,70 @@
+What is BST Iterator actually trying to do?
+
+       7
+      / \
+     3   15
+        /  \
+       9   20
+
+Its inorder traversal is:
+
+3 7 9 15 20
+
+Now suppose someone asks:
+"Give me the next smallest element every time I ask."
+
+Like this:
+iterator.next(); // 3
+iterator.next(); // 7
+iterator.next(); // 9
+iterator.next(); // 15
+
+instead of giving the whole traversal at once.
+
+That's exactly what an iterator does.
+
+Remember what next() is supposed to return: The smallest unvisited element.
+
+
+class BSTIterator {
+public:
+
+    stack<TreeNode*> stack;
+
+    // Push all left nodes into stack
+    void pushAllLeft(TreeNode* node)
+    {
+        while(node)
+        {
+            stack.push(node);
+            node = node->left;
+        }
+    }
+
+    BSTIterator(TreeNode* root)
+    {
+        pushAllLeft(root);
+    }
+
+    // Returns true if there are more elements
+    bool hasNext()
+    {
+        return !st.empty();
+    }
+
+    // Returns next smallest element
+    int next() {
+        TreeNode* currentNode = stack.top();
+        st.pop();
+
+        // Process right subtree
+        if(currentNode->right)
+        {
+            pushAllLeft(currentNode->right);
+        }
+
+        return currentNode->data;
+    }
+};
+
+
