@@ -1,0 +1,16 @@
+check thefalse case cus we dont want only starting pir, we want to tarverse teh whole array
+
+class Solution{	
+	public:
+		bool isSorted(vector<int>& nums){
+			for(int i =0; i<nums.size()-1; i++){
+                if(nums[i] > nums[i+1]){
+                    return false;
+                }
+            }
+            return true; 
+		}
+};
+
+STL
+bool isSorted = is_sorted(numbers.begin(), numbers.end());
