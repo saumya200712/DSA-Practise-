@@ -1,0 +1,16 @@
+class Solution {
+public:
+    void rotateArrayByOne(vector<int>& nums) {
+
+    int n = nums.size();
+    int first = nums[0];
+
+    vector<int> temp(n);
+    
+    for(int i =1; i<n; i++){
+        temp[i-1] = nums[i];
+    }
+    temp[n-1] = first;
+   nums = temp;
+    }
+};
