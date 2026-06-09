@@ -1,0 +1,99 @@
+Brute Force Flow
+
+For each node:
+
+Take its value = x
+Compute required value = k - x
+Search the BST for k - x
+If found and it's not the same node → return true
+O(NLOGN) OR O(N2)
+
+Optimal Approach (Striver's Iterator Method)
+Think of BST as a sorted array:
+
+2 3 4 5 6 7
+Use:
+one iterator from smallest (left)
+one iterator from largest (right)
+
+Just like Two Sum on a sorted array.
+i = 2
+j = 7
+
+2+7 = 9
+Found.
+
+
+CODE-->>
+
+class BSTIterator {
+
+    stack<TreeNode*> st;
+    bool reverse;
+
+public:
+
+    BSTIterator(TreeNode* root, bool isReverse) {
+
+        reverse = isReverse;
+        pushAll(root);
+    }
+
+    void pushAll(TreeNode* node) {
+
+        while(node) {
+
+            st.push(node);
+
+            if(reverse)
+                node = node->right;
+            else
+                node = node->left;
+        }
+    }
+
+    int next() {
+
+        TreeNode* currentNode = st.top();
+        st.pop();
+
+        if(reverse)
+            pushAll(currentNode->left);
+        else
+            pushAll(currentNode->right);
+
+        return currentNode->data;
+    }
+};
+
+class Solution {
+public:
+
+    bool twoSumBST(TreeNode* root, int k) {
+
+        if(root == nullptr)
+            return false;
+
+        BSTIterator leftIterator(root, false);
+        BSTIterator rightIterator(root, true);
+
+        int leftValue = leftIterator.next();
+        int rightValue = rightIterator.next();
+
+        while(leftValue < rightValue) {
+
+            int currentSum = leftValue + rightValue;
+
+            if(currentSum == k)
+                return true;
+
+            else if(currentSum < k)
+                leftValue = leftIterator.next();
+
+            else
+                rightValue = rightIterator.next();
+        }
+
+        return false;
+    }
+};
