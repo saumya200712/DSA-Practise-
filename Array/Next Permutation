@@ -1,0 +1,68 @@
+How do we compare two arrays?
+
+Compare from left to right.
+Example:
+
+[1,2,3]
+[1,3,2]
+
+First element:
+1 == 1
+
+Second element:
+2 < 3
+
+Therefore:
+[1,2,3] < [1,3,2]
+
+
+1. Find breakpoint
+   nums[i] < nums[i+1]
+2. Find smallest element > nums[i] from right side
+3. Swap
+4. Reverse suffix
+
+
+
+
+class Solution {
+public:
+    void nextPermutation(vector<int>& numbers) {
+
+        int size = numbers.size();
+
+        int breakPoint = -1;
+
+        // Step 1: Find breakpoint
+        for(int index = size - 2; index >= 0; index--) {
+
+            if(numbers[index] < numbers[index + 1]) {
+                breakPoint = index;
+                break;
+            }
+        }
+
+        // If no breakpoint exists,
+        // current permutation is the largest
+        if(breakPoint == -1) {
+            reverse(numbers.begin(), numbers.end());
+            return;
+        }
+
+        // Step 2: Find next greater element from right
+        for(int index = size - 1; index > breakPoint; index--) {
+
+            if(numbers[index] > numbers[breakPoint]) {
+
+                swap(numbers[index],
+                     numbers[breakPoint]);
+
+                break;
+            }
+        }
+
+        // Step 3: Reverse the suffix
+        reverse(numbers.begin() + breakPoint + 1,
+                numbers.end());
+    }
+};
