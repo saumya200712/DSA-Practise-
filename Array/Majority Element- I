@@ -1,0 +1,39 @@
+class Solution {
+
+public:
+
+   int majorityElement(vector<int>& numbers) {
+
+    int candidate = 0;
+    int count = 0;
+
+    for(int value : numbers) {
+
+        if(count == 0) {
+            candidate = value;
+        }
+
+        if(value == candidate) {
+            count++;
+        }
+        else {
+            count--;
+        }
+    }
+
+    return candidate;
+}
+
+
+Approach - HASHING 
+unordered_map<int,int> frequency;
+
+for(int value : arr) {
+    frequency[value]++;
+}
+
+for(auto element : frequency) {
+    if(element.second > n/2) {
+        return element.first;
+    }
+}
