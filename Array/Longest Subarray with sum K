@@ -1,0 +1,23 @@
+class Solution{
+public:
+    int longestSubarray(vector<int> &nums, int k){
+        int maxi = 0;
+        int left = 0;
+        int sum = 0;
+
+        for(int right =0; right<nums.size(); right++){
+            sum += nums[right];
+
+            while(sum>k){ //if sum exceed th elimit, we shrik from left 
+                sum -=nums[left];
+                left++;
+            }
+            if(sum == k){
+                maxi = max(maxi,right-left+1);
+            }
+        }
+        return maxi;
+    }
+};
+
+kinda of sliding window 
