@@ -23,7 +23,13 @@ instead of giving the whole traversal at once.
 
 That's exactly what an iterator does.
 
-Remember what next() is supposed to return: The smallest unvisited element.
+Remember what next() is supposed to return:POP THE NODE,  The smallest unvisited element.
+
+Final Iterator Logic
+Whenever we pop a node:
+Save answer
+Move to its right child
+Push all left nodes from there
 
 
 class BSTIterator {
