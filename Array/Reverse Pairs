@@ -1,0 +1,134 @@
+Step 1: What is a Reverse Pair?
+We need:
+i < j
+nums[i] > 2 * nums[j]
+Example:
+[6,4,1,2,7]
+Check:
+6 > 2*1  ✓
+6 > 2*2  ✓
+4 > 2*1  ✓
+Answer = 3
+
+Brute Force
+Your first thought should be:
+for(int i=0;i<n;i++)
+{
+    for(int j=i+1;j<n;j++)
+    {
+        if(nums[i] > 2LL*nums[j])
+            count++;
+    }
+}
+
+
+
+OPTIMAL METHOD--->  The exact same Merge Sort idea works because the left and right halves become sorted, allowing us to count many
+valid pairs with a moving pointer instead of checking every pair individually.
+
+For every left element:
+while(j<=high && nums[i] > 2LL*nums[j])
+{
+    j++;
+}
+
+Then:
+count += j - (mid+1);
+
+Why?
+Because: mid+1 is first element of right half.
+
+Everything before j satisfied:
+nums[i] > 2*nums[k]
+
+
+
+class Solution {
+public:
+
+    int countPairs(vector<int>& nums, int low, int mid, int high)
+    {
+        int count = 0;
+
+        int right = mid + 1;
+
+        for(int left = low; left <= mid; left++)
+        {
+            while(right <= high &&
+                  nums[left] > 2LL * nums[right])
+            {
+                right++;
+            }
+
+            count += (right - (mid + 1));
+        }
+
+        return count;
+    }
+
+    void merge(vector<int>& nums, int low, int mid, int high)
+    {
+        vector<int> temp;
+
+        int left = low;
+        int right = mid + 1;
+
+        while(left <= mid && right <= high)
+        {
+            if(nums[left] <= nums[right])
+            {
+                temp.push_back(nums[left]);
+                left++;
+            }
+            else
+            {
+                temp.push_back(nums[right]);
+                right++;
+            }
+        }
+
+        while(left <= mid)
+        {
+            temp.push_back(nums[left]);
+            left++;
+        }
+
+        while(right <= high)
+        {
+            temp.push_back(nums[right]);
+            right++;
+        }
+
+        for(int index = low; index <= high; index++)
+        {
+            nums[index] = temp[index - low];
+        }
+    }
+
+    int mergeSort(vector<int>& nums, int low, int high)
+    {
+        if(low >= high)
+        {
+            return 0;
+        }
+
+        int mid = (low + high) / 2;
+
+        int count = 0;
+
+        count += mergeSort(nums, low, mid);
+
+        count += mergeSort(nums, mid + 1, high);
+
+        count += countPairs(nums, low, mid, high);
+
+        merge(nums, low, mid, high);
+
+        return count;
+    }
+
+    int reversePairs(vector<int>& nums)
+    {
+        return mergeSort(nums, 0, nums.size() - 1);
+    }
+};
