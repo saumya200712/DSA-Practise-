@@ -1,0 +1,46 @@
+Here we need n/3 more numbers, means 2 CANDIDATES
+2 Method can be there of O(NLOGN) AND O(N)
+
+MAP METHOD--> 
+What is the question?
+
+Given:nums = [1,2,1,1,3,2]
+
+Length:n = 6
+
+Threshold-n/3 = 2
+We need elements appearing more than 2 times.
+Frequency:
+1 -> 3
+2 -> 2
+3 -> 1
+Answer:[1] because only 1 appears more than 2 times.
+
+SO, 
+
+class Solution {
+public:
+    vector<int> majorityElementTwo(vector<int>& nums) {
+
+        map<int, int> frequency;
+
+        for(int i = 0; i < nums.size(); i++)
+        {
+            frequency[nums[i]]++;
+        }
+
+        vector<int> answer;
+
+        int requiredFrequency = nums.size() / 3;
+
+        for(auto entry : frequency)   //entry means the values in the map of first and second stored EXAMPLE- entry.first  = 1 entry.second = 3
+        {
+            if(entry.second > requiredFrequency)    //second entry is the frequecy entry and if greater thna the required one 
+            {
+                answer.push_back(entry.first);   //we push the value, and the entry.first is the value of number in the array
+            }
+        }
+
+        return answer;
+    }
+};
