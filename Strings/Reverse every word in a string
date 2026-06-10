@@ -1,0 +1,80 @@
+class Solution {
+public:
+
+    string reverseWords(string s) {
+
+        vector<string> words;
+
+string temp = " ";
+
+for(int i =0; i<s.lenth(); i++){
+if(s[i] != ""){
+temp += s[i];
+}
+
+else{                //we push all temp words to an vector words 
+if(temp != ""){
+word.push_back(temp);
+temp="";
+}
+}
+}
+//last word
+if(temp != ""){
+ words.push_back(temp);
+ }
+
+string ans = ""; //store the reverse
+
+for(int i = words.size()-1; i>=0; i--) //traverse backward from words
+ans+=word[i];
+if(i != 0){
+                ans += " ";
+            }
+        }
+
+        return ans;
+    }
+};
+
+
+Step 1: String → temp
+
+We traverse the string character by character.
+
+Step 2: temp → words
+
+We store:
+
+words.push_back(temp);
+
+Now:
+
+words = {"welcome"}
+
+Why not directly put into ans?
+
+Because while reading the string from left to right, we don't yet know the final reversed order.
+
+At the moment we read:
+
+welcome
+
+we don't know that it must appear at the end of:
+
+"jungle the to welcome"
+
+So we first collect all words:
+
+words = {"welcome", "to", "the", "jungle"}
+
+Then later traverse backwards:
+
+jungle
+the
+to
+welcome
+
+to build:
+
+ans
