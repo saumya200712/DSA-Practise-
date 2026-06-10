@@ -1,0 +1,42 @@
+CANT USE SLIDOING WNDOW BCZ Because of:
+
+positive numbers
+negative numbers
+zeros
+
+there is no monotonic property.
+
+OPTIMAL-- take prefix and suffix product from both end and keeping check the max 
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+
+        int n = nums.size();
+
+        long long prefix = 1;
+        long long suffix = 1;
+
+        long long answer = INT_MIN;
+
+        for(int index = 0; index < n; index++)
+        {
+            if(prefix == 0)
+            {
+                prefix = 1;
+            }
+
+            if(suffix == 0)
+            {
+                suffix = 1;
+            }
+
+            prefix *= nums[index];
+
+            suffix *= nums[n - 1 - index];
+
+            answer = max(answer, max(prefix, suffix));
+        }
+
+        return answer;
+    }
+};
