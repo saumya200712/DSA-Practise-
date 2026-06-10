@@ -1,0 +1,93 @@
+Optimal Idea
+Sort first:
+sort(nums.begin(), nums.end());
+
+Now fix first two numbers:
+for(i)
+{
+    for(j)
+    {
+        left = j + 1;
+        right = n - 1;
+    }
+}
+Then use 2 pointers for the remaining two numbers.
+
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+
+        int n = nums.size();
+
+        sort(nums.begin(), nums.end());
+
+        vector<vector<int>> answer;
+
+        for(int firstIndex = 0; firstIndex < n; firstIndex++)
+        {
+            if(firstIndex > 0 &&
+               nums[firstIndex] == nums[firstIndex - 1])
+            {
+                continue;
+            }
+
+            for(int secondIndex = firstIndex + 1;
+                secondIndex < n;
+                secondIndex++)
+            {
+                if(secondIndex > firstIndex + 1 &&
+                   nums[secondIndex] == nums[secondIndex - 1])
+                {
+                    continue;
+                }
+
+                int left = secondIndex + 1;
+                int right = n - 1;
+
+                while(left < right)
+                {
+                    long long currentSum =
+                        (long long)nums[firstIndex] +
+                        nums[secondIndex] +
+                        nums[left] +
+                        nums[right];
+
+                    if(currentSum < target)
+                    {
+                        left++;
+                    }
+                    else if(currentSum > target)
+                    {
+                        right--;
+                    }
+                    else
+                    {
+                        answer.push_back({
+                            nums[firstIndex],
+                            nums[secondIndex],
+                            nums[left],
+                            nums[right]
+                        });
+
+                        left++;
+                        right--;
+
+                        while(left < right &&
+                              nums[left] == nums[left - 1])
+                        {
+                            left++;
+                        }
+
+                        while(left < right &&
+                              nums[right] == nums[right + 1])
+                        {
+                            right--;
+                        }
+                    }
+                }
+            }
+        }
+
+        return answer;
+    }
+};
