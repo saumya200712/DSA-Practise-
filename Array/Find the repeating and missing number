@@ -1,0 +1,142 @@
+Better Brute force- O(n) and space too O(N)
+
+class Solution {
+public:
+    vector<int> findMissingRepeatingNumbers(vector<int> nums) {
+        
+unordered_map<int,int> frequency;
+for(int number : nums)
+{
+    frequency[number]++;
+}
+int repeating = -1;
+int missing = -1;
+
+for(int number = 1; number <= n; number++)
+{
+    if(frequency[number] == 2)
+        repeating = number;
+
+    if(frequency[number] == 0)
+        missing = number;
+}
+}
+return {repeating, missing};
+}
+};
+
+
+
+
+sum Approach- O(n)
+
+
+class Solution {
+public:
+    vector<int> findMissingRepeatingNumbers(vector<int> nums) {
+
+        long long n = nums.size();
+
+        long long expectedSum = n * (n + 1) / 2;
+        long long expectedSquareSum =
+            n * (n + 1) * (2 * n + 1) / 6;
+
+        long long actualSum = 0;
+        long long actualSquareSum = 0;
+
+        for(int number : nums)
+        {
+            actualSum += number;
+            actualSquareSum += 1LL * number * number;
+        }
+
+        long long x = actualSum - expectedSum; // A-B
+
+        long long y =
+            (actualSquareSum - expectedSquareSum) / x; // A+B
+
+        long long repeating = (x + y) / 2;
+        long long missing = y - repeating;
+
+        return {(int)repeating, (int)missing};
+    }
+};
+Observation 1: Sum
+
+Expected sum from 1 to n:
+
+1+2+⋯+n=2n(n+1)
+	​
+
+Let's call it:
+
+expectedSum
+
+Actual array sum:
+
+actualSum
+
+Because A is repeated and B is missing:
+
+actualSum = expectedSum + A - B
+
+So:
+
+actualSum - expectedSum = A - B
+
+Let:
+
+x = A - B
+Observation 2: Sum of Squares
+
+Expected:
+
+1
+2
++2
+2
++⋯+n
+2
+=
+6
+n(n+1)(2n+1)
+	​
+
+
+Let:
+
+expectedSquareSum
+
+Actual:
+
+actualSquareSum
+
+Because A is repeated and B is missing:
+
+actualSquareSum
+=
+expectedSquareSum + A² - B²
+
+Using:
+
+A² - B² = (A-B)(A+B)
+
+we get:
+
+actualSquareSum - expectedSquareSum
+=
+(A-B)(A+B)
+
+But we already know:
+
+A-B = x
+
+So:
+
+A+B
+=
+(actualSquareSum - expectedSquareSum)/x
+
+Let:
+
+y = A+B
