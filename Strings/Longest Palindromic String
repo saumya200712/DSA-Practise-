@@ -1,0 +1,59 @@
+Every palidrome string would have a center, and we grow the center from left and right. If teh cahracters are same we add them 
+if not, then stop thats the longest palindrome substring.
+We can have even subtring length or odd, so we check for both cus center may varies for both. 
+
+Complete Strategy
+
+For every index:
+for(int center = 0; center < n; center++)
+check:
+
+Odd
+left = center;
+right = center;
+Even
+left = center;
+right = center + 1;
+
+Expand while:
+left >= 0
+right < n
+s[left] == s[right]  //to add in the palidrome string. 
+
+CODE-->
+
+class Solution {
+public:
+
+    void expand(string& s, int left, int right, int& start, int& maxLength) {
+
+        while(left >= 0 && right < s.size() && s[left] == s[right]) {  
+
+            if(right - left + 1 > maxLength) {
+
+              maxLength = right - left + 1;  //calculate current length of palidrome to check even or odd
+                start = left;
+            }
+
+            left--;
+            right++;
+        }
+    }
+
+    string longestPalindrome(string s) {
+
+        int start = 0;
+        int maxLength = 1;
+
+        for(int center = 0; center < s.size(); center++) {
+
+            // odd
+            expand(s, center, center, start, maxLength);
+
+            // even
+            expand(s, center, center + 1,start, maxLength);
+        }
+
+        return s.substr(start, maxLength);
+    }
+};
