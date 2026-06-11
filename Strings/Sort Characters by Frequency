@@ -62,6 +62,39 @@ public:
 };
 
 
+ANOTHER WAY-->
+class Solution {
+public:
+    vector<char> frequencySort(string& s) {
+
+        unordered_map<char,int> frequency;
+
+        for(char character : s) {
+            frequency[character]++;
+        }
+
+        vector<pair<int,char>> characterFrequency;
+
+        for(auto entry : frequency) {
+            characterFrequency.push_back(
+                {entry.second, entry.first}
+            );
+        }
+
+        sort(characterFrequency.rbegin(),
+             characterFrequency.rend());
+
+        vector<char> answer;
+
+        for(auto entry : characterFrequency) {
+            answer.push_back(entry.second);
+        }
+
+        return answer;
+    }
+};
+
+
 
 
 
