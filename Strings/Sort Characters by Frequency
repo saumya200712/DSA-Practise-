@@ -1,0 +1,69 @@
+Using bucket sort- 
+Example
+s = "tree"
+
+Frequency map:
+t -> 1
+r -> 1
+e -> 2
+
+Create buckets:
+index = frequency
+bucket[0] = {}
+bucket[1] = {t, r}
+bucket[2] = {e}
+bucket[3] = {}
+bucket[4] = {}
+
+Now traverse buckets from high frequency to low:
+2 -> e
+1 -> t, r
+
+Answer:
+eert
+
+
+
+CODE--->
+
+class Solution {
+public:
+    string frequencySort(string s) {
+
+        unordered_map<char, int> frequency;
+
+        for(char ch : s) {
+            frequency[ch]++;
+        }
+
+        int n = s.size();
+
+        vector<vector<char>> bucket(n + 1);
+
+        for(auto entry : frequency) {
+            char ch = entry.first;
+            int frequencyCount = entry.second;
+
+            bucket[frequencyCount].push_back(character);
+        }
+
+        string answer = "";
+
+        for(int currentFrequency = n;currentFrequency >= 1;currentFrequency--) {
+
+            for(char character : bucket[currentFrequency]) {
+
+                answer.append(currentFrequency, character);
+            }
+        }
+
+        return answer;
+    }
+};
+
+
+
+
+
+
+
