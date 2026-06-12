@@ -1,0 +1,110 @@
+First approach - using map (hasing). O(N) AND O(N)
+
+QUES. First create all nodes.Then connect all /pointers. WHY?
+When you're creating node 1', you may not have reached node 5 yet.
+
+So if you try:
+1'.random = 5'
+where is 5'? It doesn't exist yet.
+Because pointers may point to nodes that haven't been visited yet.
+
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+
+        if(head == NULL)
+            return NULL;
+
+        unordered_map<Node*, Node*> copyNode;
+
+        Node* temp = head;
+
+        // Pass 1: Create all copied nodes
+        while(temp)
+        {
+            copyNode[temp] = new Node(temp->val);
+            temp = temp->next;
+        }
+
+        temp = head;
+
+        // Pass 2: Connect next and random pointers
+        while(temp)
+        {
+            copyNode[temp]->next = copyNode[temp->next];
+            copyNode[temp]->random = copyNode[temp->random];
+
+            temp = temp->next;
+        }
+
+        return copyNode[head];
+    }
+
+OPTIMAL APPROACH- O(N) AND O(1)
+The optimal solution uses O(1) extra space by temporarily mixing the copied nodes into the original list.
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+
+        if(head == NULL)
+            return NULL;
+
+        // Step 1: Insert copied nodes
+        Node* temp = head;
+
+        while(temp)
+        {
+            Node* copy = new Node(temp->val);
+
+            copy->next = temp->next;
+            temp->next = copy;
+
+            temp = copy->next;
+        }
+
+        // Step 2: Set random pointers
+        temp = head;
+
+        while(temp)
+        {
+            if(temp->random)
+            {
+                temp->next->random = temp->random->next;
+            }
+
+            temp = temp->next->next;
+        }
+
+        // Step 3: Separate lists
+        temp = head;
+        Node* copiedHead = head->next;
+
+        while(temp)
+        {
+            Node* copy = temp->next;
+
+            temp->next = copy->next;
+
+            if(copy->next)
+                copy->next = copy->next->next;
+
+            temp = temp->next;
+        }
+
+        return copiedHead;
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+};
