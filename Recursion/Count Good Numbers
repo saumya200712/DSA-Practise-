@@ -1,0 +1,36 @@
+Math formula applied here for even and odd Count.We dont count even total substring generate, but count the number of even numbers can 
+be formed from the input number. 
+class Solution {
+public:
+    const long long MOD = 1e9 + 7;
+
+    long long power(long long base, long long exponent) {
+
+        long long result = 1;
+
+        while (exponent > 0) {
+
+            if (exponent % 2 == 1) {
+                result = (result * base) % MOD;
+                exponent--;
+            }
+            else {
+                base = (base * base) % MOD;
+                exponent /= 2;
+            }
+        }
+
+        return result;
+    }
+
+    int countGoodNumbers(long long n) {
+
+        long long evenCount = (n + 1) / 2;
+        long long oddCount = n / 2;
+
+        long long evenWays = power(5, evenCount);
+        long long oddWays = power(4, oddCount);
+
+        return (evenWays * oddWays) % MOD;
+    }
+};
