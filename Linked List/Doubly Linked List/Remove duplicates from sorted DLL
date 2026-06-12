@@ -1,0 +1,32 @@
+Remove duplicaed from sort DLL
+
+class Solution {
+public:
+    ListNode* removeDuplicates(ListNode* head) {
+
+        if(head == NULL) return head;
+
+        ListNode* current = head;
+
+        while(current != NULL) {
+
+            while(current->next != NULL &&
+                  current->val == current->next->val) {
+
+                ListNode* duplicate = current->next;
+
+                current->next = duplicate->next;
+
+                if(duplicate->next != NULL) {
+                    duplicate->next->prev = current;
+                }
+
+                delete duplicate;
+            }
+
+            current = current->next;
+        }
+
+        return head;
+    }
+};
