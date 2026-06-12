@@ -1,0 +1,88 @@
+Find kth
+Cut
+Reverse
+Join
+Repeat
+
+CODE--->
+
+ListNode* reverseList(ListNode* head)
+{
+    ListNode* previous = NULL;
+    ListNode* current = head;
+
+    while(current != NULL)
+    {
+        ListNode* nextNode = current->next;
+
+        current->next = previous;
+
+        previous = current;
+        current = nextNode;
+    }
+
+    return previous;
+}
+
+ListNode* getKthNode(ListNode* temp, int k)
+{
+    for(int count = 1; count < k && temp != NULL; count++){   //move the temp node till k only
+        temp = temp->next;
+    }
+
+    return temp;
+}
+
+   ListNode* reverseKGroup(ListNode* head, int k) {
+
+        ListNode* temp = head;
+        ListNode* previousGroupTail = NULL;
+
+        while(temp != NULL)
+        {
+            ListNode* kthNode = getKthNode(temp, k);
+
+            if(kthNode == NULL) {
+              
+                if(previousGroupTail != NULL){
+                  
+                    previousGroupTail->next = temp;
+                }
+
+                break;
+            }
+
+            ListNode* nextGroup = kthNode->next;
+
+            kthNode->next = NULL; // cut the current group 
+
+            ListNode* reversedHead = reverseList(temp);   /AND REVERSE THE CURRENT GROUP
+
+            if(temp == head)
+            {
+                head = reversedHead;
+            }
+            else
+            {
+                previousGroupTail->next = reversedHead;
+            }
+
+            previousGroupTail = temp;
+
+            temp = nextGroup;
+        }
+
+        return head;
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
