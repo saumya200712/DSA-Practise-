@@ -1,0 +1,56 @@
+To get one single sorted vertical list using the bottom pointers.
+This is basically: Merge K sorted linked lists.Each vertical chain is already sorted.
+class Node {
+public:
+    int data;
+    Node* next;
+    Node* bottom;
+
+    Node(int x) {
+        data = x;
+        next = NULL;
+        bottom = NULL;
+    }
+};
+
+class Solution {
+public:
+
+    Node* merge(Node* first, Node* second)
+    {
+        if(first == NULL)
+            return second;
+
+        if(second == NULL)
+            return first;
+
+        Node* result;
+
+        if(first->data < second->data)
+        {
+            result = first;
+            result->bottom = merge(first->bottom, second);
+        }
+        else
+        {
+            result = second;
+            result->bottom = merge(first, second->bottom);
+        }
+
+        result->next = NULL;
+
+        return result;
+    }
+
+    Node *flatten(Node *root)
+    {
+        if(root == NULL || root->next == NULL)
+            return root;
+
+        root->next = flatten(root->next);
+
+        root = merge(root, root->next);
+
+        return root;
+    }
+};
