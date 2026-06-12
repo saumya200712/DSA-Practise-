@@ -1,0 +1,43 @@
+Observation
+The last k nodes come to the front.
+So instead of rotating 1 step, 1 step, 1 step...
+
+Find:
+Length = n
+Effective rotations = k % n
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+
+        if(head == nullptr || head->next == nullptr || k == 0)
+            return head;
+
+        int length = 1;
+        ListNode* tail = head;
+
+        while(tail->next != nullptr) {
+            tail = tail->next;
+            length++;
+        }
+
+        k = k % length;
+
+        if(k == 0)
+            return head;
+
+        tail->next = head;   // make circular
+
+        ListNode* newTail = head;
+
+        for(int step = 0; step < length - k - 1; step++) {
+            newTail = newTail->next;
+        }
+
+        ListNode* newHead = newTail->next;
+
+        newTail->next = nullptr;
+
+        return newHead;
+    }
+};
