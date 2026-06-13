@@ -1,0 +1,103 @@
+We're deleting the head.
+Without a dummy node, handling this becomes a special case.
+
+With:
+dummy -> head
+
+every deletion becomes: previousNode->next = previousNode->next->next;
+
+No special cases needed. That's why almost every accepted solution uses a dummy nodeThat's the whole purpose of the dummy node: to create 
+a fake node before the head so every node has a previous node.
+
+We use 2 pointer method to optimize the soln
+
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+
+        ListNode* fast = dummy;
+        ListNode* slow = dummy;
+
+        // Move fast n+1 steps ahead
+        for(int step = 0; step <= n; step++) {
+            fast = fast->next;
+        }
+
+        // Maintain gap
+        while(fast != NULL) {
+            fast = fast->next;
+            slow = slow->next;
+        }
+
+        ListNode* nodeToDelete = slow->next;
+        slow->next = slow->next->next;
+        delete nodeToDelete;
+
+        return dummy->next;
+    }
+};
+
+Dry Run
+1 -> 2 -> 3 -> 4 -> 5
+n = 2
+
+Move fast 3 steps (n+1):
+
+dummy -> 1 -> 2 -> 3 -> 4 -> 5
+  S                 F
+
+Move both:
+S=1 F=4
+S=2 F=5
+S=3 F=NULL
+
+Now:
+slow = 3
+slow->next = 4   ← node to delete
+slow->next = slow->next->next;
+
+Result:
+1 -> 2 -> 3 -> 5
+
+
+
+Another method could be using prev and temp- 2 passes and we need to keep the length counted
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+
+        int length = 0;
+        ListNode* temp = head;
+
+        while(temp) {
+            length++;
+            temp = temp->next;
+        }
+
+        int positionFromStart = length - n;
+
+        // deleting head
+        if(positionFromStart == 0) {
+            ListNode* nodeToDelete = head;
+            head = head->next;
+            delete nodeToDelete;
+            return head;
+        }
+
+        ListNode* prev = NULL;
+        temp = head;
+
+        while(positionFromStart--) {
+            prev = temp;
+            temp = temp->next;
+        }
+
+        prev->next = temp->next;
+        delete temp;
+
+        return head;
+    }
+};
