@@ -1,0 +1,52 @@
+Max Heapify
+
+Exactly like heapifyDown.
+
+Only difference:
+
+Instead of smallest child:
+
+largest child
+
+
+
+void maxHeapify(vector<int>& arr,
+                int index,
+                int n)
+{
+    int largest = index;
+
+    int leftChild = 2 * index + 1;
+    int rightChild = 2 * index + 2;
+
+    if(leftChild < n &&
+       arr[leftChild] > arr[largest])
+    {
+        largest = leftChild;
+    }
+
+    if(rightChild < n &&
+       arr[rightChild] > arr[largest])
+    {
+        largest = rightChild;
+    }
+
+    if(largest != index)
+    {
+        swap(arr[index], arr[largest]);
+
+        maxHeapify(arr, largest, n);
+    }
+}
+
+void convertMinToMaxHeap(vector<int>& arr)
+{
+    int n = arr.size();
+
+    for(int index = n/2 - 1;
+        index >= 0;
+        index--)
+    {
+        maxHeapify(arr, index, n);
+    }
+}
