@@ -1,0 +1,56 @@
+Pointer A travels:
+A + B = 11 nodes
+
+Pointer B travels:
+B + A = 11 nodes
+
+Both cover exactly the same distance.
+The extra nodes at the beginning of one list get cancelled when they switch lists. that's why we don't need:
+length calculation
+hashing
+nested loop
+
+***Why does the loop condition use: pointerA != pointerB  and not  pointerA->val != pointerB->val?***
+In this problem, intersection means both lists share the exact same node in memory, not just the same value.IT wants the shared node, 
+not a node with the same value. 
+
+2 POINTER METHoD-->
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode* pointerA = headA;
+        ListNode* pointerB = headB;
+
+        if(headA == NULL && headB == NULL)
+        return NULL;
+
+        while(pointerA != pointerB){
+        pointerA = (pointerA == NULL) ? headB : pointerA->next;
+
+        pointerB = (pointerB==NULL)? headA : pointerB->next;
+
+    
+        }
+        return pointerA;
+    }
+};
+
+
+HASHMAP SOLN
+class Solution {
+public:
+	ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+		unordered_map<ListNode*, int> m;
+		while(headA != NULL){
+			m[headA]++;
+			headA = headA -> next;
+		}
+		while(headB != NULL){
+			if(m[headB] > 0){
+				return headB;
+			}
+			headB = headB -> next;
+		}
+		return NULL;
+	}
+};
