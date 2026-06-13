@@ -1,0 +1,241 @@
+For a node at index i (0-based indexing):
+
+parent = (i-1)/2;
+leftChild = 2*i + 1;
+rightChild = 2*i + 2;
+
+Example:
+
+arr = [2,4,5,10,8]
+
+Represents:
+
+        2
+      /   \
+     4     5
+    / \
+   10  8
+Min Heap Property
+
+Every parent ≤ children
+
+        2
+      /   \
+     4     5
+    / \
+   10  8
+
+Valid Min Heap ✅
+
+Max Heap Property
+
+Every parent ≥ children
+
+        10
+      /    \
+     8      5
+
+Valid Max Heap ✅
+
+
+WHY DO WE NEED HEAP?????
+
+Heap
+        1
+      /   \
+     2     3
+    / \   /
+   5  10 8
+
+Minimum is always:
+
+heap[0]
+
+Time:
+
+O(1)
+
+That's why heaps exist.
+
+They keep the minimum (or maximum) accessible instantly.
+
+
+Heap is always a:
+
+Complete Binary Tree
+
+Meaning:
+
+Every level filled except possibly last.
+
+Last level filled from LEFT to RIGHT.
+
+Valid:
+
+      1
+    /   \
+   2     3
+  / \
+ 4   5
+
+Invalid:
+
+      1
+    /   \
+   2     3
+    \
+     5
+
+Gap exists.
+
+INSERTION
+
+This is the first big operation.
+
+Suppose:
+
+[2,4,5,10,8]
+
+Insert:
+
+1
+
+Step 1:
+
+Put at end.
+
+[2,4,5,10,8,1]
+
+Tree:
+
+        2
+      /   \
+     4     5
+    / \   /
+   10 8  1
+
+Violation:
+
+1 < 5
+
+Swap.
+
+[2,4,1,10,8,5]
+
+Again:
+
+1 < 2
+
+Swap.
+
+[1,4,2,10,8,5]
+
+Done.
+
+This process:
+
+Bubble Up
+Heapify Up
+Percolate Up
+
+All same thing.DELETION
+
+Heap deletes ONLY ROOT.
+
+Because root is minimum.
+
+Current:
+
+[1,4,2,10,8,5]
+
+Delete minimum.
+
+Step 1
+
+Move last element to root.
+
+[5,4,2,10,8]
+
+Now broken.
+
+        5
+      /   \
+     4     2
+
+Step 2
+
+Swap with smaller child.
+
+2
+
+Result:
+
+[2,4,5,10,8]
+
+Done.
+
+This process:
+
+Heapify Down
+Bubble Down
+Sink Down
+
+Same thing.
+
+TIME COMPLEXITIES
+Access Min
+heap[0]
+
+O(1)
+
+Insert
+
+Travel height.
+
+O(log n)
+Delete
+
+Travel height.
+
+O(log n)
+
+Build Heap
+
+O(n)
+Interview favourite.
+
+PRIORITY QUEUE
+
+In C++:
+
+Max Heap by default.
+
+priority_queue<int> pq;
+
+Insert:
+
+pq.push(10);
+pq.push(5);
+pq.push(20);
+
+Top:
+
+pq.top();
+
+Output:
+
+20
+
+Min Heap:
+
+priority_queue<
+    int,
+    vector<int>,
+    greater<int>
+> pq;
+
+Now:
+
+pq.top();
+
+returns smallest.
