@@ -1,0 +1,89 @@
+For each element, find how far it can expand left and right while staying the minimum.
+Contribution
+If an element can expand:
+
+left ways on the left
+right ways on the right
+
+Then it is the minimum in
+left×right
+
+subarrays.
+
+Contribution:
+arr[i]×left×right.
+
+class Solution {
+public:
+
+    vector<int> previousLess(vector<int>& arr){
+        int n = arr.size();
+
+        vector<int> previousLessIndex(n);
+        stack<int> monotonicStack;
+
+        for(int index = 0; index < n; index++){
+
+            while(!monotonicStack.empty() &&
+                  arr[monotonicStack.top()] > arr[index]){
+                monotonicStack.pop();
+            }
+
+            previousLessIndex[index] =
+                monotonicStack.empty() ? -1 : monotonicStack.top();
+
+            monotonicStack.push(index);
+        }
+
+        return previousLessIndex;
+    }
+
+    vector<int> nextLessOrEqual(vector<int>& arr){
+        int n = arr.size();
+
+        vector<int> nextLessIndex(n);
+        stack<int> monotonicStack;
+
+        for(int index = n - 1; index >= 0; index--){
+
+            while(!monotonicStack.empty() &&
+                  arr[monotonicStack.top()] >= arr[index]){
+                monotonicStack.pop();
+            }
+
+            nextLessIndex[index] =
+                monotonicStack.empty() ? n : monotonicStack.top();
+
+            monotonicStack.push(index);
+        }
+
+        return nextLessIndex;
+    }
+
+    int sumSubarrayMins(vector<int>& arr) {
+
+        const int MOD = 1e9 + 7;
+        int n = arr.size();
+
+        vector<int> previousLessIndex = previousLess(arr);
+        vector<int> nextLessIndex = nextLessOrEqual(arr);
+
+        long long answer = 0;
+
+        for(int index = 0; index < n; index++){
+
+            long long leftChoices =
+                index - previousLessIndex[index];
+
+            long long rightChoices =
+                nextLessIndex[index] - index;
+
+            long long contribution =
+                (1LL * arr[index] * leftChoices * rightChoices) % MOD;
+
+            answer = (answer + contribution) % MOD;
+        }
+
+        return answer;
+    }
+};
