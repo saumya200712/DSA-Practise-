@@ -1,0 +1,32 @@
+To check min heap, just check parent<=child
+Which nodes to check?
+Leaves have no children.
+
+So only check:
+0 to n/2 - 1
+because these are all parent nodes.
+
+bool isMinHeap(vector<int>& arr)
+{
+    int n = arr.size();
+
+    for(int index = 0; index <= n/2 - 1; index++)
+    {
+        int leftChild = 2*index + 1;
+        int rightChild = 2*index + 2;
+
+        if(leftChild < n &&
+           arr[index] > arr[leftChild])
+        {
+            return false;
+        }
+
+        if(rightChild < n &&
+           arr[index] > arr[rightChild])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
