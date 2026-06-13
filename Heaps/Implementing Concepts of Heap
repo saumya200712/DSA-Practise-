@@ -1,0 +1,107 @@
+Every Heapify Up code ever written does:
+
+
+void heapifyUp(int index)
+{
+    while(index > 0)
+    {
+        int parentIndex = (index - 1) / 2;
+
+        if(heap[parentIndex] <= heap[index])
+            break;
+
+        swap(heap[parentIndex], heap[index]);
+
+        index = parentIndex;
+    }
+}
+
+ SIMPLE WORDS--
+
+while(not root)
+{
+    if(parent satisfies property)
+        break;
+
+    swap(parent, child);
+
+    move upwards;
+}
+
+That's it.
+
+Part 2: Insert
+
+Insert is actually tiny.
+
+void insert(int value)
+{
+    heap.push_back(value);
+
+    heapifyUp(heap.size() - 1);
+}
+
+Why?
+
+push_back()
+
+puts element at last position.
+
+Then:
+
+heapifyUp()
+
+fixes heap
+
+
+HEAPIFY DOWN--- 
+void heapifyDown(int index)
+{
+    int size = heap.size();
+
+    while(true)
+    {
+        int leftChild = 2 * index + 1;
+        int rightChild = 2 * index + 2;
+
+        int smallest = index;
+
+        if(leftChild < size &&
+           heap[leftChild] < heap[smallest])
+        {
+            smallest = leftChild;
+        }
+
+        if(rightChild < size &&
+           heap[rightChild] < heap[smallest])
+        {
+            smallest = rightChild;
+        }
+
+        if(smallest == index)
+            break;
+
+        swap(heap[index], heap[smallest]);
+
+        index = smallest;
+    }
+}
+
+
+EXTARCT MIN
+int extractMin()
+{
+    if(heap.empty())
+        return -1;
+
+    int minElement = heap[0];
+
+    heap[0] = heap.back();
+
+    heap.pop_back();
+
+    if(!heap.empty())
+        heapifyDown(0);
+
+    return minElement;
+}
