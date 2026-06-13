@@ -1,0 +1,54 @@
+This problem is basically:
+
+Reverse LL
+Add one with carry
+Reverse LL again
+
+class Solution {
+public:
+
+    ListNode* reverse(ListNode* head) {
+
+        ListNode* prev = NULL;
+        ListNode* curr = head;
+
+        while(curr != NULL) {
+
+            ListNode* nextNode = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nextNode;
+        }
+
+        return prev;
+    }
+
+    ListNode* addOne(ListNode* head) {
+
+        head = reverse(head);
+
+        ListNode* temp = head;
+        int carry = 1;
+
+        while(temp != NULL) {
+
+            int sum = temp->val + carry;
+
+            temp->val = sum % 10;
+            carry = sum / 10;
+
+            if(carry == 0)
+                break;
+
+            if(temp->next == NULL && carry) {
+                temp->next = new ListNode(carry);
+                carry = 0;
+                break;
+            }
+
+            temp = temp->next;
+        }
+
+        return reverse(head);
+    }
+};
