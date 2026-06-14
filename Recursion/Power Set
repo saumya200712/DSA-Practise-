@@ -1,0 +1,42 @@
+This is the mother of all subsequence/subset problems.
+
+Same recursion tree:
+
+Take
+or
+Not Take
+
+class Solution {
+public:
+
+    void generateSubsets(int index,
+                         vector<int>& nums,
+                         vector<int>& current,
+                         vector<vector<int>>& answer)
+    {
+        // Base Case
+        if(index == nums.size())
+        {
+            answer.push_back(current);
+            return;
+        }
+
+        // Take
+        current.push_back(nums[index]);
+        generateSubsets(index + 1, nums, current, answer);
+        current.pop_back();
+
+        // Not Take
+        generateSubsets(index + 1, nums, current, answer);
+    }
+
+    vector<vector<int>> powerSet(vector<int>& nums)
+    {
+        vector<vector<int>> answer;
+        vector<int> current;
+
+        generateSubsets(0, nums, current, answer);
+
+        return answer;
+    }
+};
