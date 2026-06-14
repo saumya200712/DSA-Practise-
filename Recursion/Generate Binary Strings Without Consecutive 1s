@@ -1,0 +1,41 @@
+For every position:
+
+You can always place '0'
+You can place '1' only if the previous character is not '1'
+
+So instead of checking the whole string, we only need to know:
+
+"What was the last character I placed?"
+
+
+ void generate(int n, string& current, vector<string>& ans){
+
+if(current.length() == n){      //BASE CASE     //current is the string we are generating 
+ans.push_back(current);
+return;
+}
+
+//place 0
+
+current.push_back('0');
+generate(n,current,ans);
+current.pop_back();
+
+//Place 1
+
+if(current.empty() && current.back() != 1){
+current.push_back('1');
+generate(n,current,ans);
+return;
+}
+
+ vector<string> generateBinaryStrings(int n)
+    {
+        vector<string> answer;
+        string current;
+
+        generate(n, current, answer);
+
+        return answer;
+    }
+};
