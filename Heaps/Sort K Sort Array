@@ -1,0 +1,51 @@
+What is a K-Sorted Array?
+
+Every element is at most k positions away from its correct sorted position.
+
+Example:
+arr = [2, 1, 4, 3, 6, 5]
+k = 1
+
+Sorted:
+[1, 2, 3, 4, 5, 6]
+
+Notice:
+2 -> moved 1 position
+1 -> moved 1 position
+4 -> moved 1 position
+3 -> moved 1 position
+
+No element moved more than k=1 positions.
+
+
+vector<int> nearlySorted(vector<int>& arr, int k)
+{
+    priority_queue<
+        int,
+        vector<int>,
+        greater<int>
+    > minHeap;
+
+    vector<int> answer;
+
+    for(int index = 0; index <= k; index++)
+    {
+        minHeap.push(arr[index]);
+    }
+
+    for(int index = k + 1; index < arr.size(); index++)
+    {
+        answer.push_back(minHeap.top());
+        minHeap.pop();
+
+        minHeap.push(arr[index]);
+    }
+
+    while(!minHeap.empty())
+    {
+        answer.push_back(minHeap.top());
+        minHeap.pop();
+    }
+
+    return answer;
+}
