@@ -1,0 +1,45 @@
+BRUTE FORCE--> O(NLOGN)
+Sort the array.
+
+sort(nums.begin(), nums.end());
+
+return nums[n-k];
+
+
+MAIN PATTERN IS OF "HEAP-SIZE", WE CARE OF THE SIZE OF HEAP. 
+
+For every element:-
+
+If heap size < k
+push
+
+If current element bigger than heap top
+pop (THE CURRENT TOP AND REMOVE IT)
+push (THE NEW BIGGER ELEMENT WE GOT)
+
+Otherwise ignore.
+
+CODE-
+class Solution {
+public:
+    int kthLargestElement(vector<int>& nums, int k) {
+
+      priority_queue<int,vector<int>,greater<int>> minHeap;
+
+      for(int num:nums){
+        if(minHeap.size() < k){
+
+            minHeap.push(num);
+        }
+        else if(num> minHeap.top()){
+            minHeap.pop();
+            minHeap.push(num);
+        }
+      }
+
+return minHeap.top();
+
+
+
+    }
+};
