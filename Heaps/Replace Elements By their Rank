@@ -1,0 +1,23 @@
+vector<int> temp = arr;
+
+sort(temp.begin(), temp.end());
+
+unordered_map<int,int> rankMap;
+
+int rank = 1;
+
+for(int number : temp)
+{
+    if(rankMap.find(number) == rankMap.end())
+    {
+        rankMap[number] = rank;
+        rank++;
+    }
+}
+
+for(int index = 0; index < arr.size(); index++)
+{
+    arr[index] = rankMap[arr[index]];
+}
+
+return arr;
