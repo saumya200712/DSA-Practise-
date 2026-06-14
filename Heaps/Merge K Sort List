@@ -1,0 +1,72 @@
+If I take:
+1 -> 4 -> 5
+^
+and remove 1,
+
+the next possible candidate from that list becomes: 4
+
+So we only need to track the current smallest element from each list.
+
+Pattern
+
+***For Merge K Sorted Lists***
+
+Put first node of every list into min heap
+Then:
+Pop smallest node
+Add to answer
+
+If popped node has next
+    push next
+
+Repeat until heap becomes empty.
+
+code-
+class Compare
+{
+public:
+    bool operator()(ListNode* firstNode,
+                    ListNode* secondNode)
+    {
+        return firstNode->val > secondNode->val;
+    }
+};
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+
+        priority_queue<
+            ListNode*,
+            vector<ListNode*>,
+            Compare
+        > minHeap;
+
+        for(ListNode* headNode : lists)
+        {
+            if(headNode)
+            {
+                minHeap.push(headNode);
+            }
+        }
+
+        ListNode* dummy = new ListNode(-1);
+        ListNode* tail = dummy;
+
+        while(!minHeap.empty())
+        {
+            ListNode* smallestNode = minHeap.top();
+            minHeap.pop();
+
+            tail->next = smallestNode;
+            tail = tail->next;
+
+            if(smallestNode->next)
+            {
+                minHeap.push(smallestNode->next);
+            }
+        }
+
+        return dummy->next;
+    }
+};
