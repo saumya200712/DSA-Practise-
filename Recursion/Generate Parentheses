@@ -1,0 +1,44 @@
+Parenthesis become equal only at the end.
+
+The real rule is:
+
+closeUsed <= openUsed
+
+because you can never close before opening.
+
+class Solution {
+public:
+   void generate(int n, int openBracket, int closeBracket, string &current ,vector<string>&ans) {
+
+    //BASE CASE
+    if(current.length() ==2*n){  //2n bcz we have 2 cases of opening bracket then closing
+        ans.push_back(current);
+        return ;
+    }
+
+    if(openBracket < n){
+
+        current.push_back('(');
+        generate(n,openBracket+1,closeBracket,current,ans);
+        current.pop_back();
+    }
+    
+  if(closeBracket < openBracket){ //bcz we first fill the opened once
+
+        current.push_back(')');
+        generate(n,openBracket,closeBracket+1,current,ans);
+        current.pop_back();
+    }
+
+ }
+
+    vector<string> generateParenthesis(int n) {
+        
+        vector<string> ans;
+        string current;
+
+        generate(n, 0, 0, current, ans);
+
+        return ans;
+    }
+};
