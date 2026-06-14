@@ -1,0 +1,33 @@
+class Solution{
+public:
+
+    int solve(int index,int currentSum,vector<int>& nums,int k) {
+
+//BASE CASE
+        if(index == nums.size())
+        {
+            return currentSum == k;
+        }
+
+        int take = solve(index + 1,currentSum + nums[index],nums, k);
+
+        int notTake = solve(index + 1, currentSum, nums,k);
+
+        return take + notTake;
+    }
+
+    int countSubsequenceWithTargetSum(vector<int>& nums, int k)
+    {
+        return solve(0, 0, nums, k);
+    }
+};
+
+Pattern Evolution
+Print all subsequences
+Take
+Not Take
+
+Base:
+index == n
+
+print current
