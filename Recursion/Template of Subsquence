@@ -1,0 +1,16 @@
+solve(index)
+{
+    if(index == nums.size())   //BASE CASE TO CEHCK IF WE TAKE THAT ELEMENT OR NOT 
+    {
+        store current;
+        return;
+    }
+
+    // take
+    current.push_back(nums[index]);
+    solve(index+1);
+    current.pop_back();
+
+    // not take
+    solve(index+1);
+}
