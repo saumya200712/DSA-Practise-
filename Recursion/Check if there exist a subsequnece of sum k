@@ -1,0 +1,33 @@
+class Solution{
+public:
+
+    bool solve(int index,
+               int currentSum,
+               vector<int>& nums,
+               int k)
+    {
+        if(index == nums.size())
+        {
+            return currentSum == k;
+        }
+
+        bool take =
+            solve(index + 1,
+                  currentSum + nums[index],
+                  nums,
+                  k);
+
+        bool notTake =
+            solve(index + 1,
+                  currentSum,
+                  nums,
+                  k);
+
+        return take || notTake;   //BCZ WE ONLY NEED ONE VALID SUBSQUENCE
+    }
+
+    bool checkSubsequenceSum(vector<int>& nums, int k)
+    {
+        return solve(0, 0, nums, k);
+    }
+};
