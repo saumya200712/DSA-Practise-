@@ -1,0 +1,76 @@
+Final Formula
+maxFreq = maximum frequency
+
+countMax = number of tasks whose frequency == maxFreq
+
+**** answer =  max(tasks.size(), (maxFreq-1)*(n+1)+countMax) ****
+
+Example:
+
+A A A
+B B B
+n = 2
+
+Most frequent task:
+
+A -> 3
+
+Let's place A first.
+
+A _ _ A _ _ A
+
+Notice:
+
+3 As create 2 gaps
+
+Number of gaps:
+
+maxFreq - 1
+
+So:
+
+3 - 1 = 2 gaps
+
+Each gap must have size:
+
+n
+
+Therefore:
+
+A _ _ A _ _ A
+
+contains  (maxFreq-1)*n  empty slots.
+
+Code-->
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+
+     vector<int>freq(26,0);
+     for(char task : tasks)
+        freq[task - 'A']++;
+
+        int maxFreq = *max_element(freq.begin(), freq.end());
+
+        int taskMaxFreq = 0;  //task which has max frequency 
+
+        for(int currentfreq : freq){
+
+            if(currentfreq == maxFreq)
+            taskMaxFreq++;
+        
+        
+        }
+
+        int requiredSlot = (maxFreq-1)*(n+1)+taskMaxFreq;
+     
+
+      return max((int)tasks.size(),requiredSlot);
+        
+    }
+};
+
+
+
+
+
