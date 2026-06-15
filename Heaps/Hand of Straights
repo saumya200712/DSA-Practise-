@@ -1,0 +1,53 @@
+The key observation
+The smallest remaining card must start a group. bcz its CONSECUTIVE adding of numbers
+
+
+Suppose the smallest card is:
+
+1
+
+There is no smaller card that can be placed before it.
+
+Therefore one group must begin with:
+
+1,2,3
+
+If any of these are missing → answer is false.
+
+UISNG HEAP DOENT HELP BCZ WE WOULD STILL NEED MAP TO HAVE THE ORDER SORETED AND THE FREQUCY OF NUMBER. THATS WHY WE USE MAP
+
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+
+        int totalCards = hand.size();
+
+        if(totalCards % groupSize != 0)
+            return false;
+
+        map<int,int> frequencyMap;
+
+        for(int card : hand)
+            frequencyMap[card]++;
+
+        while(!frequencyMap.empty())
+        {
+            int startCard = frequencyMap.begin()->first;
+
+            for(int currentCard = startCard;
+                currentCard < startCard + groupSize;
+                currentCard++)
+            {
+                if(frequencyMap.find(currentCard) == frequencyMap.end())
+                    return false;
+
+                frequencyMap[currentCard]--;
+
+                if(frequencyMap[currentCard] == 0)
+                    frequencyMap.erase(currentCard);
+            }
+        }
+
+        return true;
+    }
+};
