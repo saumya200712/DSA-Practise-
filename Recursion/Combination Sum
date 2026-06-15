@@ -1,0 +1,47 @@
+At every index, you have 2 choices:
+
+1. Take the current number
+Add it to the current combination.
+Reduce target.
+Stay on the same index because the number can be used unlimited times.
+
+2. Skip the current number
+Move to the next index.
+
+class Solution {
+public:
+    
+    void solve(int index,vector<int>& candidates,int target,vector<int>& currentCombination,vector<vector<int>>& answer) {
+
+        if (target == 0) {        //the current number is the target 
+            answer.push_back(currentCombination); 
+            return;
+        }
+
+        if (index == candidates.size())   //out of bound 
+            return;
+
+        // Take current element
+        if (candidates[index] <= target) {
+            currentCombination.push_back(candidates[index]);
+
+            solve(index, candidates,target - candidates[index],currentCombination,answer);
+
+            currentCombination.pop_back();
+        }
+
+        // Skip current element
+
+        solve(index + 1,candidates,target,currentCombination,answer);
+    }
+
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+
+        vector<vector<int>> answer;
+        vector<int> currentCombination;
+
+        solve(0,candidates,target,currentCombination,answer);
+
+        return answer;
+    }
+};
