@@ -1,0 +1,65 @@
+At every node, there are two different things we care about.
+
+1. What can I return to my parent?
+
+Parent can only continue through one side.
+
+      10
+     /
+    5
+
+If parent wants to use node 5, it can only take:
+
+5
+
+or
+
+5 + left
+
+or
+
+5 + right
+
+It cannot take both left and right because that would split the path.
+
+So return value is:
+
+node->val + max(leftGain, rightGain)
+
+
+"What should a node return to its parent?"
+
+The answer is:
+
+node->val + max(leftGain, rightGain)
+
+Then separately maintain a global answer for:
+
+leftGain + node->val + rightGain
+
+class Solution {
+public:
+    int ans = INT_MIN;
+
+    int dfs(TreeNode* root) {
+
+        if(root == NULL)
+            return 0;
+
+        int leftGain = max(0, dfs(root->left));
+        int rightGain = max(0, dfs(root->right));
+
+        ans = max(ans,
+                  leftGain + rightGain + root->val);
+
+        return root->val +
+               max(leftGain, rightGain);
+    }
+
+    int maxPathSum(TreeNode* root) {
+
+        dfs(root);
+
+        return ans;
+    }
+};
