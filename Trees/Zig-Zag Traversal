@@ -10,7 +10,7 @@ public:
         queue<TreeNode*> q;
         q.push(root);
 
-        bool leftToRight = true;
+        bool leftToRight = true;   //to check which direction of level is it
 
         while(!q.empty()) {
 
@@ -24,10 +24,10 @@ public:
 
                 int index;
 
-                if(leftToRight)
+                if(leftToRight)   //if left to right then put the values
                     index = i;
                 else
-                    index = size - 1 - i;
+                    index = size - 1 - i;   //if from roght to left 
 
                 level[index] = node->val;
 
