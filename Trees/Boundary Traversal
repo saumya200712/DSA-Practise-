@@ -1,0 +1,88 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int data;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *      TreeNode(int val) : data(val) , left(nullptr) , right(nullptr) {}
+ * };
+ **/
+
+class Solution {
+public:
+
+    bool isLeaf(TreeNode* node){
+        return node->left == NULL && node->right == NULL;
+    }
+
+    void addLeftBoundary(TreeNode* root, vector<int>& ans){
+
+        TreeNode* current = root->left;
+
+        while(current){
+
+            if(!isLeaf(current))
+                ans.push_back(current->data);
+
+            if(current->left)
+                current = current->left;
+            else
+                current = current->right;
+        }
+    }
+
+    void addLeaves(TreeNode* root, vector<int>& ans){
+
+        if(root == NULL)
+            return;
+
+        if(isLeaf(root)){
+            ans.push_back(root->data);
+            return;
+        }
+
+        addLeaves(root->left, ans);
+        addLeaves(root->right, ans);
+    }
+
+    void addRightBoundary(TreeNode* root, vector<int>& ans){
+
+        TreeNode* current = root->right;
+
+        vector<int> temp;
+
+        while(current){
+
+            if(!isLeaf(current))
+                temp.push_back(current->data);
+
+            if(current->right)
+                current = current->right;
+            else
+                current = current->left;
+        }
+
+        for(int index = temp.size() - 1; index >= 0; index--){
+            ans.push_back(temp[index]);
+        }
+    }
+
+    vector<int> boundary(TreeNode* root){
+
+        vector<int> ans;
+
+        if(root == NULL)
+            return ans;
+
+        if(!isLeaf(root))
+            ans.push_back(root->data);
+
+        addLeftBoundary(root, ans);
+
+        addLeaves(root, ans);
+
+        addRightBoundary(root, ans);
+
+        return ans;
+    }
+};
