@@ -1,0 +1,72 @@
+In Vertical Order Traversal, every node gets a column number:
+
+        1 (col=0)
+       / \
+      2   3
+   (−1) (+1)
+
+The output is column-wise from smallest column to largest column.
+
+What information do we need?
+
+For every node store:
+
+(col, row, value)
+
+
+Since every entry is
+{col,row,val}
+vector sorting automatically does: col ascending then row ascending then val ascending which is exactly what the problem wants.
+
+We need the answer as:
+
+[[4], [2], [1,5], [3]]
+That's what "group by column" means.
+
+class Solution {
+public:
+
+    vector<vector<int>> nodes;
+
+    void dfs(TreeNode* root,int row,int col)
+    {
+        if(root == NULL)
+            return;
+
+        nodes.push_back({col,row,root->val});
+
+        dfs(root->left,row+1,col-1);
+        dfs(root->right,row+1,col+1);
+    }
+
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+
+        dfs(root,0,0);
+
+        sort(nodes.begin(),nodes.end());
+
+        vector<vector<int>> ans;
+
+        int prevCol = nodes[0][0];
+
+        ans.push_back({});
+
+//GROUP BY COLOUMN
+
+        for(auto &x : nodes)
+        {
+            int col = x[0];
+            int val = x[2];
+
+            if(col != prevCol)
+            {
+                ans.push_back({});
+                prevCol = col;
+            }
+
+            ans.back().push_back(val);
+        }
+
+        return ans;
+    }
+};
