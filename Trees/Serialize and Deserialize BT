@@ -1,0 +1,150 @@
+Store enough information in a string so that the exact tree can be rebuilt later
+
+
+Example Tree
+      1
+     / \
+    2   3
+
+We use Preorder
+
+Root -> Left -> Right
+
+and store N for NULL.
+
+Serialization
+
+Start:
+
+dfs(1)
+
+Visit root:
+
+"1 "
+
+Go left:
+
+dfs(2)
+
+Add:
+
+"1 2 "
+
+Go left of 2
+
+dfs(NULL)
+
+Add:
+
+"1 2 N "
+
+Go right of 2
+
+dfs(NULL)
+
+Add:
+
+"1 2 N N "
+
+Back to 1
+
+Go right:
+
+dfs(3)
+
+Add:
+
+"1 2 N N 3 "
+
+Go left of 3
+
+dfs(NULL)
+
+Add:
+
+"1 2 N N 3 N "
+
+Go right of 3
+
+dfs(NULL)
+
+Add:
+
+"1 2 N N 3 N N "
+
+Final serialized string:
+
+1 2 N N 3 N N
+Why N is important?
+
+Without N:
+
+1 2 3
+
+could mean
+
+    1
+   /
+  2
+ /
+3
+
+or
+
+    1
+     \
+      2
+       \
+        3
+
+Impossible to reconstruct.
+
+
+class Codec {
+public:
+
+    // ---------- Serialize ----------
+    void preorder(TreeNode* root, string& s)
+    {
+        if(!root)
+        {
+            s += "N ";
+            return;
+        }
+
+        s += to_string(root->val) + " ";
+
+        preorder(root->left, s);
+        preorder(root->right, s);
+    }
+
+    string serialize(TreeNode* root)
+    {
+        string s;
+        preorder(root, s);
+        return s;
+    }
+
+    // ---------- Deserialize ----------
+    TreeNode* build(stringstream& ss)
+    {
+        string val;
+        ss >> val;
+
+        if(val == "N")
+            return NULL;
+
+        TreeNode* root = new TreeNode(stoi(val));
+
+        root->left = build(ss);
+        root->right = build(ss);
+
+        return root;
+    }
+
+    TreeNode* deserialize(string data)
+    {
+        stringstream ss(data);
+        return build(ss);
+    }
+};
