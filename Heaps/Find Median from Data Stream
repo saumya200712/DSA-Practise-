@@ -1,0 +1,106 @@
+Approach-1, using 2 heaps, as maxheap and minheap 
+To find median, we only need: middle element or two middle elements
+
+Nothing else matters.
+
+So split numbers into:
+
+Small Half | Large Half
+
+Example:
+
+1 3 | 5 15
+
+Store:
+
+maxHeap = [3,1]
+minHeap = [5,15]
+
+Notice:
+
+maxHeap.top() = 3
+minHeap.top() = 5
+
+These are exactly the two middle numbers!
+
+Median:
+
+(3+5)/2 = 4
+
+No sorting needed.
+
+BALANCING 
+We want:
+abs(left.size() - right.size()) <= 1
+because the median must stay in the middle.
+
+
+
+class MedianFinder {
+public:
+
+    priority_queue<int> left; // max heap
+    priority_queue<int, vector<int>, greater<int>> right; // min heap
+
+    MedianFinder() {
+    }
+
+    void addNum(int num) {
+
+        if(left.empty() || num <= left.top())
+            left.push(num);
+        else
+            right.push(num);
+
+        // Balance heaps, balancing means making sure one heap doesn't become much bigger than the other.
+        if(left.size() > right.size() + 1) {
+            right.push(left.top());  //Move the largest element from left to right:
+            left.pop();
+        }
+
+        if(right.size() > left.size() + 1) {
+            left.push(right.top());
+            right.pop();
+        }
+    }
+
+    double findMedian() {
+
+        if(left.size() == right.size()) {  //if odd size 
+            return (left.top() + right.top()) / 2.0;
+        }
+
+        if(left.size() > right.size())
+            return left.top();
+
+        return right.top();
+    }
+};
+
+
+Approach-2 uisng vector as O(n) and O(1)
+
+class MedianFinder {
+public:
+    vector<int> nums;
+
+    MedianFinder() {
+    }
+
+    void addNum(int num) {
+
+        auto it = lower_bound(nums.begin(), nums.end(), num);
+
+        nums.insert(it, num);
+    }
+
+    double findMedian() {
+
+        int n = nums.size();
+
+        if(n % 2)
+            return nums[n/2];
+
+        return (nums[n/2] + nums[n/2 - 1]) / 2.0;
+    }
+};
