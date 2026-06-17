@@ -1,0 +1,62 @@
+Optimized Heap Idea
+Sort both arrays.
+Largest possible sum is:
+nums1[n-1] + nums2[n-1]
+Put it into a max heap with indices:
+(sum, i, j)
+After taking (i,j), the next candidates are:  //the next bigger number in that array would be the left one and up one 
+(i-1,j)
+(i,j-1)
+Use a set to avoid duplicate pairs.Without the set, you'll push the same pair of indices multiple times into the heap.Think of the set as a visited array in BFS.
+
+This gives:
+
+O(k log k)
+
+which is the expected solution.
+
+
+class Solution {
+public:
+    vector<int> maxSumCombinations(vector<int> &nums1, vector<int> &nums2, int k) {
+
+        int n = nums1.size();
+
+        sort(nums1.begin(), nums1.end());
+        sort(nums2.begin(), nums2.end());
+
+        priority_queue<pair<int,pair<int,int>>> pq;
+        set<pair<int,int>> st;
+
+        pq.push({nums1[n-1] + nums2[n-1], {n-1, n-1}});
+        st.insert({n-1, n-1});
+
+        vector<int> ans;
+
+        while(k--) {
+
+            auto top = pq.top();
+            pq.pop();
+
+            int sum = top.first;
+            int i = top.second.first;
+            int j = top.second.second;
+
+            ans.push_back(sum);
+
+            // (i-1, j)
+            if(i > 0 && st.find({i-1, j}) == st.end()) { //we push the elemenet and make sure that its position isnt repeated 
+                pq.push({nums1[i-1] + nums2[j], {i-1, j}});
+                st.insert({i-1, j});
+            }
+
+            // (i, j-1)
+            if(j > 0 && st.find({i, j-1}) == st.end()) {
+                pq.push({nums1[i] + nums2[j-1], {i, j-1}});
+                st.insert({i, j-1});
+            }
+        }
+
+        return ans;
+    }
+};
