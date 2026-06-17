@@ -1,0 +1,125 @@
+Approach-1, MORRIS TRAVERSAL 
+Step 1
+
+Find the rightmost node of the left subtree.
+
+Example:
+
+        1
+       / \
+      2   5
+     / \
+    3   4
+
+For root = 1
+
+Left subtree:
+
+      2
+     / \
+    3   4
+
+Rightmost node = 4
+
+Step 2
+
+Attach original right subtree to that node.
+
+prev->right = curr->right;
+
+Result:
+
+      2
+     / \
+    3   4
+         \
+          5
+Step 3
+
+Move left subtree to right.
+
+curr->right = curr->left;
+curr->left = NULL;
+
+Now:
+
+1
+ \
+  2
+ / \
+3   4
+     \
+      5
+Step 4
+
+Move to next node
+
+curr = curr->right;
+
+Repeat.
+
+CODE--> class Solution {
+public:
+    void flatten(TreeNode* root) {
+
+        TreeNode* curr = root;
+
+        while(curr){
+
+            if(curr->left){
+
+                TreeNode* prev = curr->left;
+
+                while(prev->right){
+                    prev = prev->right;
+                }
+
+                prev->right = curr->right;
+
+                curr->right = curr->left;
+                curr->left = NULL;
+            }
+
+            curr = curr->right;
+        }
+    }
+};
+
+
+
+
+
+
+
+Approach-2, PRE-ORDER APPROACH WE USE AN EXTRA SPACE. 
+
+class Solution {
+public:
+
+    void preorder(TreeNode* root, vector<TreeNode*>& ans){
+
+        if(!root) return;
+
+        ans.push_back(root);
+
+        preorder(root->left, ans);
+        preorder(root->right, ans);
+    }
+
+    void flatten(TreeNode* root) {
+
+        if(!root) return;
+
+        vector<TreeNode*> ans;
+
+        preorder(root, ans);
+
+        for(int i=0;i<ans.size()-1;i++){  //CONNECT LEFT TO RIGHT
+            ans[i]->left = NULL;
+            ans[i]->right = ans[i+1];
+        }
+
+        ans.back()->left = NULL;
+        ans.back()->right = NULL;
+    }
+};
