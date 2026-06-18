@@ -1,0 +1,137 @@
+An edge is represented [ai, bi] denoting that there is an edge from vertex ai to bi . An edge is called a bridge if its removal makes 
+some vertex unable to reach another vertex.
+Return all bridges in the graph in any order.
+
+Tarjan's Smart Idea
+
+Question:
+
+When DFS reaches a node,
+how do we know whether this subtree has another path back to ancestors?
+
+That's where, we have--> 
+
+tin[] -- Time when node is first visited.
+low[] -- Smallest discovery time reachable from that node.
+
+Example-->
+Graph:
+
+0
+|
+1
+|\
+| \
+2  3
+ \/
+
+DFS order:
+
+tin[0]=1
+tin[1]=2
+tin[2]=3
+tin[3]=4
+
+At node 3: Can reach:
+
+3 -> 1
+which has
+
+tin = 2
+Therefore:
+
+low[3]=2
+
+Final:
+
+Node    tin    low
+
+0       1      1
+1       2      2
+2       3      2
+3       4      2
+
+
+***Bridge Condition***
+
+Suppose DFS edge:
+
+u ---- v
+
+where v is child.
+
+If
+********  low[v] > tin[u]  ********
+then u-v is bridge.
+
+Because child subtree cannot reach
+
+u
+or
+ancestor of u through any back edge.
+
+Only connection is:
+u-v
+
+Remove it → disconnected.
+Hence bridge.
+
+
+CODE-->
+class Solution {
+public:
+    int timer = 1;
+    vector<int> tin, low, vis;
+    vector<vector<int>> bridges;
+
+    void dfs(int node, int parent, vector<int> adj[]) {
+
+        vis[node] = 1; 
+
+        tin[node] = low[node] = timer++;  //current low = tin bcz they have visted only themself 
+
+        for (auto neighbour : adj[node]) {
+
+            if (neighbour == parent)
+                continue;
+
+            if (!vis[neighbour]) {
+
+                dfs(neighbour, node, adj);
+
+                low[node] = min(low[node], low[neighbour]);   //get low from its nearby shortcut route 
+
+                // Bridge condition
+                if (low[neigh] > tin[node]) {
+                    bridges.push_back({node, neigh});
+                }
+            }
+            else {
+                // Back edge
+                low[node] = min(low[node], tin[neigh]);
+            }
+        }
+    }
+
+    vector<vector<int>> criticalConnections(int V,
+                                           vector<vector<int>>& E) {
+
+        vector<int> adj[V];
+
+        for (auto &it : E) {
+            int u = it[0];
+            int v = it[1];
+
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        tin.resize(V);
+        low.resize(V);
+        vis.resize(V, 0);
+
+        dfs(0, -1, adj);
+
+        return bridges;
+    }
+};
