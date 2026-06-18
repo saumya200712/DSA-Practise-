@@ -1,0 +1,81 @@
+Where Adj[i] contains all vertices j such that there is a directed edge from vertex i to vertex j.Your task is to find the number 
+of strongly connected components (SCCs) in the graph.
+
+1. Find finishing order
+2. Reverse graph
+3. DFS in stack order
+Every DFS = one SCC.
+
+class Solution
+{
+public:
+
+    void dfs1(int node, vector<int> adj[], vector<int>& vis, stack<int>& st){
+        vis[node] = 1;
+
+        for(auto it : adj[node])
+        {
+            if(!vis[it])
+            dfs1(it, adj, vis, st);
+        }
+
+        st.push(node);
+    }
+
+    void dfs2(int node, vector<int> revAdj[],vector<int>& vis){
+
+        vis[node] = 1;
+
+        for(auto it : revAdj[node])
+        {
+            if(!vis[it])
+            dfs2(it, revAdj, vis);
+        }
+    }
+
+    int kosaraju(int V, vector<int> adj[])
+    {
+        stack<int> st;
+        vector<int> vis(V,0);
+
+        // Step 1
+        for(int i=0;i<V;i++)
+        {
+            if(!vis[i])
+            dfs1(i, adj, vis, st);
+        }
+
+        // Step 2 Reverse Graph
+
+        vector<int> revAdj[V];
+
+        for(int i=0;i<V;i++)
+        {
+            vis[i] = 0;
+
+            for(auto it : adj[i])
+            {
+                revAdj[it].push_back(i);
+            }
+        }
+
+        // Step 3
+
+        int scc = 0;
+
+        while(!st.empty())
+        {
+            int node = st.top();
+            st.pop();
+
+            if(!vis[node])
+            {
+                scc++;
+
+                dfs2(node, revAdj, vis);
+            }
+        }
+
+        return scc;
+    }
+};
