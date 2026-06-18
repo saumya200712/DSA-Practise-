@@ -1,0 +1,93 @@
+Find all the vertices removing which (and edges through it) would increase the number of connected components in the graph. The graph may
+be initially disconnected.. Return the vertices in ascending order. If there are no such vertices then returns a list containing -1.
+
+Articulation Point?
+A node whose removal disconnects the graph. Divided the graph into multiple connected componenets 
+
+Similar to bridges bcz, Articulation Point:  low[child] >= tin[node]
+
+New Rule-->  Root has only one child. Removing root doesn't split multiple DFS subtrees. Hence root is NOT automatically articulation.
+
+Rule:
+if(parent == -1 && childCount > 1)
+    articulation
+
+CODE--->
+class Solution {
+public:
+    int timer = 1;
+
+    void dfs(int node, int parent,
+             vector<int> adj[],
+             vector<int>& vis,
+             vector<int>& tin,
+             vector<int>& low,
+             vector<int>& mark)
+    {
+        vis[node] = 1;
+        tin[node] = low[node] = timer++;
+
+        int child = 0;
+
+        for (auto adjNode : adj[node])
+        {
+            if (adjNode == parent)
+                continue;
+
+            if (!vis[adjNode])
+            {
+                dfs(adjNode, node, adj, vis, tin, low, mark);
+
+                low[node] = min(low[node], low[adjNode]);
+
+                // Articulation Point Condition
+                if (low[adjNode] >= tin[node] && parent != -1)
+                {
+                    mark[node] = 1;
+                }
+
+                child++;
+            }
+            else
+            {
+                low[node] = min(low[node], tin[adjNode]);
+            }
+        }
+
+        // Root node special case
+        if (parent == -1 && child > 1)
+        {
+            mark[node] = 1;
+        }
+    }
+
+    vector<int> articulationPoints(int n, vector<int> adj[])
+    {
+        vector<int> vis(n, 0);
+        vector<int> tin(n);
+        vector<int> low(n);
+        vector<int> mark(n, 0);
+
+        // Graph may be disconnected
+        for (int i = 0; i < n; i++)
+        {
+            if (!vis[i])
+            {
+                dfs(i, -1, adj, vis, tin, low, mark);
+            }
+        }
+
+        vector<int> ans;
+
+        for (int i = 0; i < n; i++)
+        {
+            if (mark[i] == 1)
+                ans.push_back(i);
+        }
+
+        if (ans.size() == 0)
+            return {-1};
+
+        return ans;
+    }
+};
