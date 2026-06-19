@@ -1,0 +1,100 @@
+Suppose stones are:
+
+(0,0)
+(0,1)
+(1,0)
+
+Grid:
+
+● ●
+●
+
+Rule:  You can remove a stone if there is another stone in the same row or column.
+
+In every connected component:
+
+You can remove all stones
+except one.
+
+ANSWER--> TOTAL STONE - NUMBER OF COMPONENTS
+
+WE TREAT U AS ROW AND V AS COL. 
+
+
+class DisjointSet {
+public:
+    vector<int> parent, size;
+
+    DisjointSet(int n) {
+        parent.resize(n + 1);
+        size.resize(n + 1, 1);
+
+        for (int i = 0; i <= n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    int findUPar(int node) {
+        if (node == parent[node])
+            return node;
+
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    void unionBySize(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+
+        if (ulp_u == ulp_v)
+            return;
+
+        if (size[ulp_u] < size[ulp_v]) {
+            parent[ulp_u] = ulp_v;
+            size[ulp_v] += size[ulp_u];
+        }
+        else {
+            parent[ulp_v] = ulp_u;
+            size[ulp_u] += size[ulp_v];
+        }
+    }
+};
+
+class Solution {
+public:
+    int removeStones(vector<vector<int>>& stones) {
+
+        int maxRow = 0;
+        int maxCol = 0;
+
+        for (auto &it : stones) {
+            maxRow = max(maxRow, it[0]);
+            maxCol = max(maxCol, it[1]);
+        }
+
+        DisjointSet ds(maxRow + maxCol + 1);
+
+        unordered_map<int, int> stoneNodes;
+
+        for (auto &it : stones) {
+
+            int row = it[0];
+
+            int col = it[1] + maxRow + 1;
+
+            ds.unionBySize(row, col);
+
+            stoneNodes[row] = 1;
+            stoneNodes[col] = 1;
+        }
+
+        int components = 0;
+
+        for (auto it : stoneNodes) {
+
+            if (ds.findUPar(it.first) == it.first)
+                components++;
+        }
+
+        return stones.size() - components;
+    }
+};
