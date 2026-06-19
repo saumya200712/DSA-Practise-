@@ -1,0 +1,94 @@
+IMPLEMENTATION--> 
+
+Step 1: Parent Array
+
+Initially every node is its own parent.
+
+For 7 nodes:
+
+vector<int> parent(8);
+
+for(int i=0;i<=7;i++)
+{
+    parent[i]=i;
+}
+
+Result:
+
+Node     0 1 2 3 4 5 6 7
+Parent   0 1 2 3 4 5 6 7
+
+
+Step 2: Find Ultimate Parent
+
+Suppose:
+
+1
+|
+2
+|
+3
+
+Parent array: IS FINDED BY TRVAERSING
+
+parent[1]=1;
+parent[2]=1;
+parent[3]=2;
+
+CODE-->
+int findUPar(int node){
+    if(node==parent[node])
+        return node;
+
+    return findUPar(parent[node]);
+}
+
+
+
+STEP-3
+PATH COMPRESSION---> IF A VERY BIG GRAPH, TO FIND THE PARENT ITS VERY TOUGH CUS HAVE TO TRAVERSE ALL TEH NODES, SO WE CMPRESS THE PATHS
+int findUPar(int node)
+{
+    if(node==parent[node])
+        return node;
+
+    return parent[node] = findUPar(parent[node]);
+}
+
+STEP-4
+UNION--> TO CONNECT VERTICES OF GRAPH
+Suppose:
+
+1     4
+|     |
+2     5
+
+We connect:
+
+union(2,5);
+
+Now they should become one group
+
+STEP-5
+UNION BY SIZE----> IF THERES ANY CHNAGE IN THE SUZE IF WE JOINED ANY POINTS OF GRAPH SOO,
+void unionBySize(int u,int v)
+{
+    int ulp_u = findUPar(u);
+    int ulp_v = findUPar(v);
+
+    if(ulp_u == ulp_v)
+        return;
+
+    if(size[ulp_u] < size[ulp_v])
+    {
+        parent[ulp_u] = ulp_v;
+        size[ulp_v] += size[ulp_u];
+    }
+    else
+    {
+        parent[ulp_v] = ulp_u;
+        size[ulp_u] += size[ulp_v];
+    }
+}
+
+
