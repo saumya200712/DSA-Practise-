@@ -1,0 +1,161 @@
+Problem
+
+You are given a grid of 0 and 1.
+
+You can change at most one 0 → 1.
+
+Find the largest possible island size.
+
+Example:
+
+1 0
+0 1
+
+Change any zero:
+
+1 1
+0 1
+
+or
+
+1 0
+1 1
+
+Largest island = 3
+
+Answer = 3
+
+
+class DisjointSet {
+public:
+    vector<int> parent, size;
+
+    DisjointSet(int n) {
+        parent.resize(n);
+        size.resize(n, 1);
+
+        for(int i = 0; i < n; i++)
+            parent[i] = i;
+    }
+
+    int findUPar(int node) {
+
+        if(node == parent[node])
+            return node;
+
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    void unionBySize(int u, int v) {
+
+        int pu = findUPar(u);
+        int pv = findUPar(v);
+
+        if(pu == pv) return;
+
+        if(size[pu] < size[pv]) {
+            parent[pu] = pv;
+            size[pv] += size[pu];
+        }
+        else {
+            parent[pv] = pu;
+            size[pu] += size[pv];
+        }
+    }
+};
+
+class Solution {
+public:
+    int largestIsland(vector<vector<int>>& grid) {
+
+        int n = grid.size();
+
+        DisjointSet ds(n * n);
+
+        int dr[] = {-1, 0, 1, 0};
+        int dc[] = {0, 1, 0, -1};
+
+        // Phase 1:
+        // Connect all existing 1's
+
+        for(int row = 0; row < n; row++) {
+
+            for(int col = 0; col < n; col++) {
+
+                if(grid[row][col] == 0)
+                    continue;
+
+                int node = row * n + col;
+
+                for(int k = 0; k < 4; k++) {
+
+                    int nr = row + dr[k];
+                    int nc = col + dc[k];
+
+                    if(nr >= 0 && nr < n &&
+                       nc >= 0 && nc < n &&
+                       grid[nr][nc] == 1) {
+
+                        int adjNode = nr * n + nc;
+
+                        ds.unionBySize(node, adjNode);
+                    }
+                }
+            }
+        }
+
+        int maxi = 0;
+
+        // Phase 2:
+        // Try converting every 0 into 1
+
+        for(int row = 0; row < n; row++) {
+
+            for(int col = 0; col < n; col++) {
+
+                if(grid[row][col] == 1)
+                    continue;
+
+                set<int> components;
+
+                for(int k = 0; k < 4; k++) {
+
+                    int nr = row + dr[k];
+                    int nc = col + dc[k];
+
+                    if(nr >= 0 && nr < n &&
+                       nc >= 0 && nc < n &&
+                       grid[nr][nc] == 1) {
+
+                        int adjNode = nr * n + nc;
+
+                        components.insert(
+                            ds.findUPar(adjNode)
+                        );
+                    }
+                }
+
+                int totalSize = 1;
+
+                for(auto parent : components) {
+                    totalSize += ds.size[parent];
+                }
+
+                maxi = max(maxi, totalSize);
+            }
+        }
+
+        // Edge case:
+        // Grid already full of 1's
+
+        for(int cell = 0; cell < n * n; cell++) {
+
+            maxi = max(
+                maxi,
+                ds.size[ds.findUPar(cell)]
+            );
+        }
+
+        return maxi;
+    }
+};
