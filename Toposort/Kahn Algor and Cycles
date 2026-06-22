@@ -1,0 +1,10 @@
+If I ask:
+
+Why does Kahn's Algorithm detect cycles?
+
+You should answer:
+
+In a DAG, at least one node always has indegree 0.
+We keep removing such nodes.
+If a cycle exists, eventually no node will have indegree 0, so some nodes remain unprocessed.
+Therefore, if processed nodes < N, a cycle exists.
