@@ -1,0 +1,74 @@
+QUES. Given two words, beginWord and endWord, and a dictionary wordList, return the number of words in the shortest transformation 
+sequence from beginWord to endWord, or 0 if no such sequence exists.
+
+ 
+Why BFS?
+The question asks:
+
+Find the shortest transformation sequence.
+
+Hidden Graph
+
+Imagine each word is a node.
+
+hit ---- hot
+          |
+      dot---lot
+       |     |
+      dog---log
+        \   /
+         cog
+
+Two words are connected if they differ by one letter.
+
+Biggest Trick
+
+How do we find neighbors of "hit"?
+
+Instead of checking every word manually:  Take every position and try all 26 letters.
+
+
+CODE-->
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        
+ unordered_set<string> st(wordList.begin(), wordList.end());
+
+        queue<pair<string,int>> q;
+
+        q.push({beginWord,1}); //push the first one as refernce
+
+        st.erase(beginWord);  // remove from the set 
+
+        while(!q.empty()){
+            string word = q.front().first;
+            int level = q.front().second;
+
+            q.pop();
+
+            if(word == endWord) //if no other word mathches
+            return level;
+
+            for(int i=0;i<word.size();i++) {
+
+                char original = word[i]; //go level by level for each word 
+
+                for(char ch='a'; ch<='z'; ch++) {
+
+                    word[i] = ch;
+
+                    if(st.find(word) != st.end()){
+                        q.push({word, level+1});
+                        st.erase(word);
+                    }
+        }
+
+        word[i] = original;
+            }
+        }
+        return 0;
+
+
+    }
+};
