@@ -1,0 +1,81 @@
+You are also given three integers src, dst, and k, return the cheapest price from src to dst with at most k stops. If there is no such route,
+return -1.
+
+What do we store?
+
+In queue: {stops, node, cost}
+
+Example:
+
+queue< {stops,node,cost} >
+Why not Dijkstra?
+
+Normal Dijkstra minimizes cost only.
+
+Here we have an extra constraint:
+
+stops <= k
+So we perform a BFS-like traversal level by level on stops.
+class Solution {
+public:
+ int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        
+//make an adjaency list
+
+vector<pair<int,int>>adj[n];  // adj[u] = {v,cost}
+
+for(auto it: flights){
+    int u = it[0];
+    int v = it[1];
+    int cost = it[2];
+
+       adj[u].push_back({v,cost});
+}
+
+//distance array
+vector<int> dist(n, INT_MAX);  //Minimum cost to reach every city
+
+dist[src] = 0;
+
+//queue to store 
+queue<pair<int,pair<int,int>>> q; //{stops,{node,cost}}
+
+q.push({0,{src,0}});  //push the source to start the bfs
+
+//bfs
+
+while(!q.empty()){
+    auto it = q.front();
+     q.pop();
+
+int stops = it.first;
+int node = it.second.first;
+int cost = it.second.second;
+
+if(stops>k)
+continue;   //we dont explore futher
+
+for(auto neigh:adj[node]){
+    int adjNode = neigh.first;
+    int edgeWeight = neigh.second;
+
+if(cost + edgeWeight < dist[adjNode] && stops <=k){
+
+    dist[adjNode] = cost + edgeWeight;
+
+    q.push({stops + 1, {adjNode, dist[adjNode]}});
+     }
+  }           
+ }
+ 
+
+        if(dist[dst] == INT_MAX)
+            return -1;
+        
+        return dist[dst];
+    }
+};
+
+
+   
+ 
