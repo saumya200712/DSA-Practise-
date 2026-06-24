@@ -1,0 +1,72 @@
+Step 1: The Core Idea of DP
+
+DP says:
+
+If I already solved a problem once,
+why solve it again?
+
+Instead:
+
+Solve once
+Store answer
+Reuse later
+
+That's literally DP.
+
+Nothing more.
+
+Example- solving fibonacci again and again!!!!
+
+Step 1: When Can We Use DP?
+
+A problem should have TWO properties.
+
+Property 1: Overlapping Subproblems
+
+Same problem appears multiple times.
+
+Example:fib(3) appeared repeatedly in the recursion tree.
+
+This is called: Overlapping Subproblems
+
+Property 2: Optimal Substructure
+
+Big answer can be built using smaller answers.
+
+Example:
+
+fib(5)=fib(4) + fib(3)
+
+Bigger problem depends on smaller problems.
+
+This is called:
+
+Optimal Substructure
+
+DP is just an optimization of recursion.
+
+
+What Is a State?  ## This is the most important DP word.
+
+Suppose I ask: Find fib(5)
+
+The only thing changing is: n
+
+So state is: f(n)
+
+In another problem:
+
+f(index)
+
+State is: index
+
+In another: f(row,col)
+
+State is: (row,col)
+
+
+And for every problem ask:
+
+1. What is my state?
+2. What are my choices?
+3. What is the recurrence relation?
