@@ -1,0 +1,56 @@
+The "1D" simply means: Our DP state can be stored in a single array.
+
+Example: dp[i]
+
+Only one variable (i) is changing.
+
+You are climbing a staircase. It takes n steps to reach the top.Each time you can either climb 1 or 2 steps. In how many distinct ways\
+can you climb to the top?
+
+So if:
+
+f(i) = number of ways to reach stair i
+
+then:
+
+f(i) = f(i-1) + f(i-2)
+
+Why?
+
+Because every path to stair i must end with either:
+
+(i-1) -> i   (1-step jump)
+
+or
+
+(i-2) -> i   (2-step jump)
+
+So all ways to reach i are:
+
+ways to reach (i-1)
++
+ways to reach (i-2)
+
+
+class Solution {
+public:
+    int climbStairs(int n) {
+
+        if(n <= 2)
+            return n;
+
+        int prev2 = 1; //dp[1]
+        int prev1 = 2;  //dp[2]
+
+        for(int i = 3; i <= n; i++) {
+            int cur = prev1 + prev2;
+
+//for the next starirs teh prev would chnage na 
+
+            prev2 = prev1;
+            prev1 = cur;
+        }
+
+        return prev1;
+    }
+};
