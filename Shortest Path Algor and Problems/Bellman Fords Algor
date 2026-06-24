@@ -1,0 +1,108 @@
+Bellman-Ford Algorithm
+What problem does it solve?
+
+Find shortest distance from a source node to all other nodes.
+
+Unlike Dijkstra:
+
+✅ Works with negative edge weights
+✅ Can detect negative cycles
+
+MAIN IDEA--> Bellman-Ford simply relaxes every edge repeatedly.
+
+Relaxation
+
+Suppose edge:
+
+u ----wt----> v
+
+If
+
+dist[u] + wt < dist[v]
+
+then
+
+dist[v] = dist[u] + wt;
+
+This is called relaxing an edge. Therefore: If we relax all edges V - 1 times all shortest distances are guaranteed to be found.
+
+######  Most Important Observation  #####
+
+In a graph with V vertices:
+
+Shortest path can contain at most
+
+V - 1 edges
+
+Why?
+
+Because if a path uses V edges, some node repeats.
+That forms a cycle.
+Removing cycle gives a shorter/equal path.
+
+Detection Trick
+
+After doing: V-1 relaxations, do one extra relaxation.
+
+If any distance still decreases:
+
+dist[u] + wt < dist[v]
+
+then
+
+Negative Cycle Exists
+
+ALGORITHM-->
+dist[src] = 0
+
+Repeat V-1 times:
+    Relax every edge
+
+One extra pass:
+    If any edge relaxes
+       Negative Cycle
+
+Hence,
+TIME-- O(V*E)
+Space:O(V)
+
+CODE-> 
+class Solution {
+public:
+    vector<int> bellmanFord(int V,vector<vector<int>>& edges,int src) {
+
+        vector<int> dist(V, 1e8);
+        dist[src] = 0;
+
+        // V-1 relaxations
+        for(int i = 0; i < V - 1; i++) {
+
+            for(auto &it : edges) {
+
+                int u = it[0];
+                int v = it[1];
+                int wt = it[2];
+
+                if(dist[u] != 1e8 && dist[u] + wt < dist[v]) { //relaxtion
+
+                    dist[v] = dist[u] + wt;
+                }
+            }
+        }
+
+        // Negative cycle check
+        for(auto &it : edges) {
+
+            int u = it[0];
+            int v = it[1];
+            int wt = it[2];
+
+            if(dist[u] != 1e8 && dist[u] + wt < dist[v]) {
+
+                return {-1};
+            }
+        }
+
+        return dist;
+    }
+};
