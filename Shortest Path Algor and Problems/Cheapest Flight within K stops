@@ -16,66 +16,77 @@ Here we have an extra constraint:
 
 stops <= k
 So we perform a BFS-like traversal level by level on stops.
+
+
 class Solution {
 public:
- int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+
+        // Step 1: Build adjacency list
+
+        vector<pair<int,int>> adj[n];
+
+        for(auto it: flights) {
+
+            adj[it[0]].push_back({it[1], it[2]});  // {destination, price}
+        }
+//THIS CREATES SOEMHTING LIKE THIS--> 
+adj[0] = {(1,100),(2,500)}
+
+adj[1] = {(2,100)}
+
+adj[2] = {}
+//
         
-//make an adjaency list
+        // Step 2: Initialize distance array and queue
 
-vector<pair<int,int>>adj[n];  // adj[u] = {v,cost}
+        vector<int> dist(n, 1e9);
 
-for(auto it: flights){
-    int u = it[0];
-    int v = it[1];
-    int cost = it[2];
-
-       adj[u].push_back({v,cost});
-}
-
-//distance array
-vector<int> dist(n, INT_MAX);  //Minimum cost to reach every city
-
-dist[src] = 0;
-
-//queue to store 
-queue<pair<int,pair<int,int>>> q; //{stops,{node,cost}}
-
-q.push({0,{src,0}});  //push the source to start the bfs
-
-//bfs
-
-while(!q.empty()){
-    auto it = q.front();
-     q.pop();
-
-int stops = it.first;
-int node = it.second.first;
-int cost = it.second.second;
-
-if(stops>k)
-continue;   //we dont explore futher
-
-for(auto neigh:adj[node]){
-    int adjNode = neigh.first;
-    int edgeWeight = neigh.second;
-
-if(cost + edgeWeight < dist[adjNode] && stops <=k){
-
-    dist[adjNode] = cost + edgeWeight;
-
-    q.push({stops + 1, {adjNode, dist[adjNode]}});
-     }
-  }           
- }
- 
-
-        if(dist[dst] == INT_MAX)
-            return -1;
+        queue<pair<int,pair<int,int>>> q;  // {stops, {node, cost}}
         
+        dist[src] = 0;
+
+        q.push({0, {src, 0}});  // Start: 0 stops, at src, cost 0
+        
+        // Step 3: BFS with stop constraint
+
+        while(!q.empty()) {
+            // Step 4: Extract current state
+
+            auto it = q.front();
+            q.pop();
+            
+            int stops = it.first;
+            int node = it.second.first;
+            int cost = it.second.second;
+            
+            // Step 5: Skip if exceeded stop limit
+            if(stops > k) continue;
+            
+            // Step 6: Explore all neighbors
+
+            for(auto neigh: adj[node]) {
+
+                int adjNode = neigh.first;
+                int edgeWeight = neigh.second;  // Edge weight (price)
+                
+                // Step 7: Check if we found a cheaper path within stop limit
+
+                if(cost + edgeWeight < dist[adjNode] && stops <= k) {
+                    // Step 8: Update distance and add to queue
+
+                    dist[adjNode] = cost + edgeWeight;
+
+                    q.push({stops + 1, {adjNode, cost + edgeWeight}});
+                }
+            }
+        }
+        
+        // Step 9: Return result
+        if(dist[dst] == 1e9) 
+       return -1;  // Unreachable within K stops
+
         return dist[dst];
     }
 };
-
-
-   
  
