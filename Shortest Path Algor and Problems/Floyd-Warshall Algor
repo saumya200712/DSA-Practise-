@@ -1,0 +1,98 @@
+What does it find?
+
+Shortest distance between every pair of nodes.
+
+After running it: dist[i][j] contains shortest distance from node i to node j.
+Main Idea
+
+Suppose we have
+
+i ------> j
+
+Current distance:  dist[i][j]
+
+Now imagine node k.
+
+Maybe going through k is shorter:
+
+i → k → j
+
+So check:
+
+dist[i][k] + dist[k][j]
+
+If smaller:
+
+dist[i][j] = dist[i][k] + dist[k][j];
+
+
+
+This is literally the whole algorithm:
+
+dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+
+for(k)
+   for(i)
+      for(j)
+Meaning
+k = intermediate node
+
+i = source
+
+j = destination
+
+For every source-destination pair:
+
+Negative Cycle Detection
+
+After Floyd-Warshall: If
+
+dist[i][i] < 0
+
+for any node then Negative Cycle Exists.
+
+Time-  O(V³)
+
+Space: O(V²)
+
+CODE-->
+class Solution {
+public:
+    void shortest_distance(vector<vector<int>>& mat) {
+
+        int n = mat.size();
+
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+
+                if(mat[i][j] == -1)
+                    mat[i][j] = 1e9;
+
+                if(i == j)
+                    mat[i][j] = 0;
+            }
+        }
+
+3 loops
+        for(int k = 0; k < n; k++) {
+
+            for(int i = 0; i < n; i++) {
+
+                for(int j = 0; j < n; j++) {
+
+                    mat[i][j] = min( mat[i][j],mat[i][k] + mat[k][j]
+                    );
+                }
+            }
+        }
+
+//Negative cycle detection
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+
+                if(mat[i][j] == 1e9)
+                    mat[i][j] = -1;
+            }
+        }
+    }
+};
