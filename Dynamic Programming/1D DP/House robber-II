@@ -1,0 +1,49 @@
+What's different?
+
+In House Robber I, the houses are in a straight line.
+
+2 --- 7 --- 9 --- 3 --- 1
+
+Only adjacent houses cannot be robbed.
+
+In House Robber II, the houses form a circle. The last house is adjacent to house 1.
+
+Whenever you see a circular array, ask yourself:
+
+Can I break the circle into two linear cases?
+
+class Solution {
+public:
+
+    int solve(vector<int>& nums, int start, int end) {
+
+        int prev2 = 0;
+        int prev1 = 0;
+
+        for(int i = start; i <= end; i++) {
+
+            int take = nums[i] + prev2;
+            int notTake = prev1;
+
+            int curr = max(take, notTake);
+
+            prev2 = prev1;
+            prev1 = curr;
+        }
+
+        return prev1;
+    }
+
+    int rob(vector<int>& nums) {
+
+        int n = nums.size();
+
+        if(n == 1)
+            return nums[0];
+
+        return max(
+            solve(nums, 0, n - 2),   // Exclude last
+            solve(nums, 1, n - 1)    // Exclude first
+        );
+    }
+};
