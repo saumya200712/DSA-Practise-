@@ -1,0 +1,138 @@
+Imagine this grid:
+
+S  □  □
+
+□  □  □
+
+□  □  E
+S = Start (0,0)
+E = End (m-1,n-1)
+
+You are standing at S.
+
+You can only move:
+
+➡️ Right
+⬇️ Down
+
+The question is:
+
+How many different ways can you reach the destination?
+
+Example
+
+For a 3 × 3 grid:
+
+S  □  □
+
+□  □  □
+
+□  □  E
+
+One path is
+
+R → R → D → D
+
+Another
+
+R → D → R → D
+
+Another
+
+D → R → D → R
+
+There are multiple such paths.
+
+Our job is to count them.
+
+So our base case becomes
+
+When we reach
+
+(i == 0 && j == 0)
+
+return
+
+1
+
+because there is exactly one way to be at the starting cell.
+
+Base Case 2
+
+If we go outside the grid:
+
+if(i < 0 || j < 0)
+    return 0;
+
+✔ Outside the grid is invalid.
+
+Tabulation-->class Solution {
+public:
+    int uniquePaths(int m, int n) {
+
+        vector<vector<int>> dp(m, vector<int>(n, 0));
+
+        // Base case
+        dp[0][0] = 1;
+
+        for(int i = 0; i < m; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                if(i == 0 && j == 0)
+                    continue;
+
+                int up = 0;
+                int left = 0;
+
+                if(i > 0)
+                    up = dp[i-1][j];
+
+                if(j > 0)
+                    left = dp[i][j-1];
+
+                dp[i][j] = up + left;
+            }
+        }
+
+        return dp[m-1][n-1];
+    }
+};
+
+SPACE OPTIMIZED CODE--> 
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+
+        vector<int> prev(n, 0);
+
+        for(int i = 0; i < m; i++)
+        {
+            vector<int> curr(n, 0);
+
+            for(int j = 0; j < n; j++)
+            {
+                if(i == 0 && j == 0)
+                {
+                    curr[j] = 1;
+                    continue;
+                }
+
+                int up = 0;
+                int left = 0;
+
+                if(i > 0)
+                    up = prev[j];
+
+                if(j > 0)
+                    left = curr[j-1];
+
+                curr[j] = up + left;
+            }
+
+            prev = curr;
+        }
+
+        return prev[n-1];
+    }
+};
