@@ -1,0 +1,102 @@
+Before we solve ANY grid DP
+
+There are only 4 questions.
+
+1. What is my state?
+
+Usually
+
+dp[i][j]
+
+means
+
+Answer till cell (i,j)
+
+or
+
+Answer starting from cell (i,j)
+
+depending on the question.
+
+2. From where can I come?
+
+For every cell ask
+
+"Who can reach me?"
+
+Example
+
+□ ← □ ← □
+↑
+□ ← □ ← □
+↑
+□ ← □ ← □
+
+If movement is only right/down,
+
+to reach
+
+(i,j)
+
+we came from
+
+(i-1,j)
+
+or
+
+(i,j-1)
+
+That's your recurrence.
+
+3. Base Case
+
+Usually
+
+(0,0)
+
+or
+
+last row
+
+or
+
+last column
+
+depending on the problem.
+
+4. Fill order
+
+If recurrence depends on
+
+up
+left
+
+then fill
+
+top → bottom
+left → right
+
+If recurrence depends on
+
+down
+right
+
+then fill backwards.
+
+Everything depends on dependencies.
+
+Pattern you'll see again and again
+
+Every grid DP is basically
+
+for(i)
+{
+    for(j)
+    {
+        dp[i][j]=something
+    }
+}
+
+Nested loops.
+
+Nothing magical.
