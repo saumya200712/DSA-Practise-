@@ -1,0 +1,115 @@
+QUES--> certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have 
+security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
+Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight 
+without alerting the police.
+
+What choices do you have?
+
+Only two.
+
+Choice 1: Rob this house
+
+If you rob it,
+
+i-1
+
+cannot be robbed.
+
+So after robbing house i, the best money becomes
+
+nums[i] + best till (i-2)
+
+because we skip one house.
+
+Choice-2: Dont rob this one, and take the next one
+If we don't rob house i
+
+Nothing changes.
+
+Best answer is simply
+
+notTake = dp[i-1];
+
+##########
+Our recurrence becomes
+
+dp[i] = max(take, notTake);
+
+⭐ This is the entire DP relation.
+
+TABULATION METHOD--> O(n) space
+
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+
+        int n = nums.size();
+
+        if(n == 1)
+            return nums[0];
+
+        vector<int> dp(n);
+
+        dp[0] = nums[0];
+        dp[1] = max(nums[0], nums[1]);
+
+        for(int i = 2; i < n; i++)
+        {
+            int take = nums[i] + dp[i-2];
+            int notTake = dp[i-1];
+
+            dp[i] = max(take, notTake);
+        }
+
+        return dp[n-1];
+    }
+};
+
+NEXT FINALLY THE OPTIMIZED METHOD WOULD BE--> 
+When computing dp[i], which values do we need?
+
+Only:
+
+dp[i-1]
+dp[i-2]
+
+Nothing else.
+
+We'll store only two variables.
+
+prev2 = dp[i-2]
+prev1 = dp[i-1]
+
+Think of them like this:
+
+prev2  prev1   curr
+  |       |      |
+dp[i-2] dp[i-1] dp[i]
+
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+
+        int n = nums.size();
+
+        if(n == 1)
+            return nums[0];
+
+        int prev2 = nums[0];
+        int prev1 = max(nums[0], nums[1]);
+
+        for(int i = 2; i < n; i++)
+        {
+            int take = nums[i] + prev2;
+            int notTake = prev1;
+
+            int curr = max(take, notTake);
+
+            // Shift the window
+            prev2 = prev1;
+            prev1 = curr;
+        }
+
+        return prev1;
+    }
+};
