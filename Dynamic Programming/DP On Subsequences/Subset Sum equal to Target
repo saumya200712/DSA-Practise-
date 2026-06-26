@@ -1,0 +1,142 @@
+Now, unlike dp[i][j] we have-->
+
+dp[i][target]
+
+means
+
+Can I make target using elements from index 0...i?
+
+This definition is EVERYTHING.
+
+Decision
+
+At every index,
+
+Suppose
+
+arr = [2,5,7]
+
+i = 1
+
+arr[i] = 5
+
+You only have two choices.
+
+Don't take it
+Target remains same.
+
+Example
+
+Target = 7
+
+Ignore 5
+
+Need 7 from previous elements.
+Take it
+
+Only if
+
+arr[i] <= target
+
+Then
+
+Target = 7
+
+Take 5
+
+Need 2 from previous elements.
+
+See?
+
+The target decreases.
+Transition
+
+This is the most important recurrence in subsequence DP.
+
+bool notTake = dp[i-1][target];
+
+bool take = false;
+
+if(arr[i] <= target)
+    take = dp[i-1][target-arr[i]];
+
+dp[i][target] = take || notTake;
+
+Base Cases
+
+These are very important.
+
+Base 1
+
+If
+
+target == 0
+
+return
+
+true
+
+Why?
+
+Because we can always choose no elements.
+
+The empty subset has sum 0.
+
+So in tabulation,
+
+for(int i = 0; i < n; i++)
+    dp[i][0] = true;
+Base 2
+
+First element.
+
+If
+
+arr[0] == target
+
+then
+
+dp[0][arr[0]] = true;
+
+because using only the first element,
+
+we can form exactly its value.
+
+class Solution {
+public:
+
+    bool isSubsetSum(vector<int>& arr, int target)
+    {
+        int n = arr.size();
+
+        vector<bool> prev(target+1,false);
+
+        prev[0] = true;
+
+        if(arr[0] <= target)
+            prev[arr[0]] = true;
+
+        for(int i = 1; i < n; i++)
+        {
+            vector<bool> curr(target+1,false);
+
+            curr[0] = true;
+
+            for(int t = 1; t <= target; t++)
+            {
+                bool notTake = prev[t];
+
+                bool take = false;
+
+                if(arr[i] <= t)
+                    take = prev[t-arr[i]];
+
+                curr[t] = take || notTake;
+            }
+
+            prev = curr;
+        }
+
+        return prev[target];
+    }
+};
