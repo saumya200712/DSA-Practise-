@@ -1,0 +1,97 @@
+Problem
+
+You can perform at most 2 transactions.
+
+Example:
+prices = [3,3,5,0,0,3,1,4]
+
+One optimal solution:
+
+Buy 3
+Sell 5
+
+Profit = 2
+
+Buy 0
+Sell 4
+
+Profit = 4
+
+Total = 6
+What changed?
+
+In Stock II, our state was (i, buy) because we only needed to know
+
+Current day
+Can buy?
+Now that's not enough.
+
+Suppose we've already completed 2 transactions.
+
+Can we buy again?
+❌ No.
+
+So we need one extra piece of information.
+New State
+(i, buy, cap) where cap = transactions remaining
+
+********* Rule: Decrease cap only when selling, not when buying.************
+
+
+Base Cases
+
+There are two now.
+
+1. No more days
+
+if(i == n)
+    return 0;
+2. No transactions left
+
+if(cap == 0)
+    return 0;
+
+Even if prices go up later, we can't trade anymore.
+
+
+State: dp[i][buy][cap]
+
+Since i only depends on i+1, we only keep two 2×3 arrays.
+
+ahead → stores i+1
+curr → stores i
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+
+        int n = prices.size();
+
+        vector<vector<int>> ahead(2, vector<int>(3, 0));
+        vector<vector<int>> curr(2, vector<int>(3, 0));
+
+        for (int i = n - 1; i >= 0; i--) {
+
+            for (int buy = 0; buy <= 1; buy++) {
+
+                for (int cap = 1; cap <= 2; cap++) {
+
+                    if (buy) {
+
+                        curr[buy][cap] = max( -prices[i] + ahead[0][cap],ahead[1][cap]);
+
+                    } 
+                      else {
+
+                        curr[buy][cap] = max(prices[i] + ahead[1][cap - 1], ahead[0][cap]);
+
+                    }
+                }
+            }
+
+            ahead = curr;
+        }
+
+        return ahead[1][2];
+    }
+};
