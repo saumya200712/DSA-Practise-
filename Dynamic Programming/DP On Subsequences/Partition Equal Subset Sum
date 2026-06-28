@@ -1,0 +1,162 @@
+So the question becomes:   Can we find a subset whose sum is S/2? bcz bith subsets are equal
+
+That's exactly Subset Sum.
+
+Step 2: Edge Case
+
+Compute total sum.
+
+sum = 1+5+11+5 = 22
+
+Target
+
+22/2 = 11
+
+Possible?
+
+11
+
+or
+
+5+5+1
+
+Yes.
+
+Return true.
+
+Example 2
+
+1 2 3 5
+
+sum = 11
+
+Odd number.
+
+Impossible to split equally.
+
+Immediately
+
+return false;
+
+Step 4: Transition
+
+If we don't take current element
+
+dp[i][j]
+=
+dp[i-1][j]
+
+If we take it
+
+dp[i-1][j-nums[i-1]]
+
+Tabulation Code
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+
+        int sum = 0;
+
+        for(int x: nums)
+            sum += x;
+
+        if(sum % 2)
+            return false;
+
+        int target = sum / 2;
+        int n = nums.size();
+
+        vector<vector<bool>> dp(n + 1,
+                                vector<bool>(target + 1, false));
+
+        for(int i = 0; i <= n; i++)
+            dp[i][0] = true;
+
+        for(int i = 1; i <= n; i++) {
+
+            for(int j = 1; j <= target; j++) {
+
+                if(nums[i-1] <= j)
+                    dp[i][j] =
+                        dp[i-1][j] ||
+                        dp[i-1][j-nums[i-1]];
+                else
+                    dp[i][j] = dp[i-1][j];
+            }
+        }
+
+        return dp[n][target];
+    }
+};
+
+Time:
+
+O(n * target)
+
+Space:
+
+O(n * target)
+
+
+
+
+Space Optimization (Interview Favourite ⭐⭐⭐)
+
+Notice every row only depends on the previous row.
+
+So use one array.
+
+Important Trick
+
+Traverse backwards.
+
+for each number
+
+    for(j = target → num)
+
+Why backwards?
+
+Because this is 0/1 Knapsack.
+
+Each element can only be used once.
+
+If we went forward, we'd accidentally reuse the same number multiple times.
+
+Optimized Code
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+
+        int sum = 0;
+
+        for(int x : nums)
+            sum += x;
+
+        if(sum % 2)
+            return false;
+
+        int target = sum / 2;
+
+        vector<bool> dp(target + 1, false);
+
+        dp[0] = true;
+
+        for(int num : nums) {
+
+            for(int j = target; j >= num; j--) {
+
+                dp[j] = dp[j] || dp[j - num];
+            }
+        }
+
+        return dp[target];
+    }
+};
+
+Time:
+
+O(n × target)
+
+Space:
+
+O(target)
