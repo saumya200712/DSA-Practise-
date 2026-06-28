@@ -79,8 +79,19 @@ dp[n][1] = 0
 
 is our base case.
 
-CODE- SPACE OPTIMIZED 
+CODE- OPTIMIZED THIS IS THE GREEDY APPROACH WHICH IS EFFICIENT
 
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n=prices.size();
+        vector<int> dp(n, 0);
+        for (int i=1;i<n;i++) dp[i]+=dp[i-1]+max(0, prices[i]-prices[i-1]);
+        return dp[n-1];
+    }
+};
+
+//THIS IS DP ANSWER WHICH IS SPACED OPTIMIZED 
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
@@ -91,9 +102,15 @@ public:
 
         for (int i = n - 1; i >= 0; i--) {
 
-            curr[1] = max(-prices[i] + ahead[0], ahead[1]);
+            curr[1] = max(
+                -prices[i] + ahead[0],
+                ahead[1]
+            );
 
-            curr[0] = max(prices[i] + ahead[1],ahead[0]);
+            curr[0] = max(
+                prices[i] + ahead[1],
+                ahead[0]
+            );
 
             ahead = curr;
         }
