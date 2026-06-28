@@ -1,0 +1,104 @@
+Now:
+
+Buy → Sell → Buy → Sell → Buy → Sell ...
+
+You can perform unlimited transactions.
+
+But one rule remains:
+
+You cannot hold more than one stock at a time.
+
+So this is valid:
+
+Buy
+Sell
+Buy
+Sell
+Buy
+Sell
+
+But this is NOT:
+
+Buy
+Buy ❌
+Sell
+
+### Meaning of buy---->>
+
+Again,
+buy = 1
+means
+I DON'T own a stock.
+I CAN buy.
+
+buy = 0
+means
+I already own a stock.
+I CAN'T buy.
+I can sell.
+
+
+Observe carefully.
+
+While computing row i, we only use
+
+i + 1
+
+We never use
+
+i + 2
+i + 3
+
+So we only need the next row.
+
+Let's call it ahead and the current row curr
+
+ALSO--> 
+
+So DP becomes dp[i][buy]
+
+Size?
+
+n + 1 rows
+2 columns
+
+Why n+1?
+
+Because we have the base case  i == n
+When we've processed all days: i == n
+
+There are no more days left to trade. So the profit is 0
+
+So
+vector<vector<int>> dp(n + 1, vector<int>(2, 0));
+
+Notice we initialize with 0 because
+
+dp[n][0] = 0
+dp[n][1] = 0
+
+is our base case.
+
+CODE- SPACE OPTIMIZED 
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+
+        int n = prices.size();
+
+        vector<int> ahead(2, 0), curr(2, 0);
+
+        for (int i = n - 1; i >= 0; i--) {
+
+            curr[1] = max(-prices[i] + ahead[0], ahead[1]);
+
+            curr[0] = max(prices[i] + ahead[1],ahead[0]);
+
+            ahead = curr;
+        }
+
+        return ahead[1];
+    }
+};
+
