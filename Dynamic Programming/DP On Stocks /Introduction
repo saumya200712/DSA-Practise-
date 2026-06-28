@@ -1,0 +1,131 @@
+Every stock problem has three things:
+
+1. Days
+
+You're given
+
+prices = [7,1,5,3,6,4]
+
+Each index is a day.
+
+Day:     0 1 2 3 4 5
+Price:   7 1 5 3 6 4
+
+Every day, you make one decision.
+
+2. Decisions
+
+On every day you can do one of these:
+
+Buy
+Sell
+Skip
+
+That's it.
+
+The constraints decide whether buying/selling is allowed.
+
+3. States
+
+This is where DP comes in.
+
+Imagine you're standing on Day i.
+
+To decide the best profit, what information do you need?
+
+You need to know:
+
+Which day you're on.
+Whether you're allowed to buy or you already own a stock.
+
+That's the basic DP state.
+
+(day, buy)
+
+or
+
+dp[i][buy]
+
+where
+
+buy = 1
+→ We DO NOT own a stock.
+→ We are allowed to buy.
+
+buy = 0
+→ We already own one stock.
+→ We cannot buy.
+→ We can either sell or skip.
+
+⚠️ This naming confuses almost everyone initially. Here, buy = 1 means "buying is allowed", not "we have bought."
+
+
+#### The Master Formula  ####
+
+This is the formula we'll keep reusing:
+
+If you can buy (buy == 1):
+
+profit = max(-price[i] + solve(i+1, 0),   // Buy
+     solve(i+1, 1)               // Skip
+
+);
+
+If you're holding a stock (buy == 0):
+
+profit = max( price[i] + solve(i+1, 1),   // Sell
+     solve(i+1, 0)               // Skip
+);
+
+
+//Choice 1 — Buy
+
+You spend today's money.
+
+Profit = -price[i]
+
+Now you own a stock.
+
+Tomorrow you'll be in
+
+solve(i+1, 0)
+
+because you're holding.
+
+So
+
+-buy[i] + solve(i+1,0)
+
+//Choice 2 — Skip
+
+Do nothing.
+
+Tomorrow you're still allowed to buy.
+
+solve(i+1,1)
+
+
+
+//Choice 1 — Sell
+
+If I sell today,
+
++price[i]
+
+Now I don't own any stock.
+
+Tomorrow I can buy again.
+
+So
+
+price[i] + solve(i+1,1)
+
+Notice the state changed to 1 because after selling, you're free to buy again.
+
+Choice 2 — Don't sell
+
+Keep holding.
+
+Tomorrow I'm still holding.
+
+solve(i+1,0)
