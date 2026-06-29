@@ -1,0 +1,63 @@
+You want to build an expression out of nums by adding one of the symbols '+' and '-' before each integer in nums and then concatenate 
+all the integers.
+For example, if nums = [2, 1], you can add a '+' before 2 and a '-' before 1 and concatenate them to build the expression "+2-1".
+
+
+So the base case is
+
+if(index == nums.size()){  //we ahve completed all the numbers 
+    if(sum == target)
+        return 1;
+    else
+        return 0;
+}
+
+Notice we're counting ways, not finding a minimum.
+
+The state is two-dimensional:
+
+(index, sum)
+
+because the answer depends on:
+
+which index we're at
+what the current sum is
+
+there can be negative sum asw ell so we need an offset that would be sum+offset
+
+class Solution {
+public:
+    int solve(vector<int>& nums, int index, int sum,
+              int target, vector<vector<int>>& dp, int offset) {
+
+        if (index == nums.size()) {
+            return (sum == target);
+        }
+
+        if (dp[index][sum + offset] != -1)
+            return dp[index][sum + offset];
+
+        int plus = solve(nums, index + 1,
+                         sum + nums[index],
+                         target, dp, offset);
+
+        int minus = solve(nums, index + 1,
+                          sum - nums[index],
+                          target, dp, offset);
+
+        return dp[index][sum + offset] = plus + minus;
+    }
+
+    int findTargetSumWays(vector<int>& nums, int target) {
+
+        int total = 0;
+
+        for (int x : nums)
+            total += x;
+
+        vector<vector<int>> dp(nums.size(),
+                               vector<int>(2 * total + 1, -1));
+
+        return solve(nums, 0, 0, target, dp, total);
+    }
+};
