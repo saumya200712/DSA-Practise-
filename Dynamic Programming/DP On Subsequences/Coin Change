@@ -1,0 +1,80 @@
+f(amount) = minimum coins needed to make this amount
+
+Now ask:
+
+Suppose I'm trying to make 11.
+
+What should I do?
+
+I can pick
+
+coin = 1
+coin = 2
+coin = 5
+
+If I pick 5 first, then remaining amount is
+
+11 - 5 = 6
+
+So answer becomes 
+1 + f(6)
+
+If I pick 2,
+
+1 + f(9)
+
+If I pick 1,
+
+1 + f(10)
+
+Take the minimum.
+
+So
+
+f(11)=min(
+1+f(10),
+1+f(9),
+1+f(6)
+)
+
+Recursive Formula
+
+For every coin
+
+ans = INF
+
+for every coin c
+
+ans=min(ans,1+f(amount-c))
+
+
+
+class Solution {
+public:
+    int solve(vector<int>& coins, int amount, vector<int>& dp) {
+
+        if (amount == 0) return 0;
+
+        if (amount < 0) return 1e9;
+
+        if (dp[amount] != -1)   //if alr solved dont solve it again
+            return dp[amount];
+
+        int ans = 1e9;
+
+        for (int coin : coins) {
+            ans = min(ans, 1 + solve(coins, amount - coin, dp));
+        }
+
+        return dp[amount] = ans;
+    }
+
+    int coinChange(vector<int>& coins, int amount) {
+
+        vector<int> dp(amount + 1, -1);  //dp[x] if we solve otherwise -1 
+
+        int ans = solve(coins, amount, dp);
+
+        return ans >= 1e9 ? -1 : ans;
+    }
+};
